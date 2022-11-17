@@ -11,10 +11,12 @@ route.get('/', (req, res) => {
 });
 
 //API
+
 //users
 route.post('/users', userController.create);
-// route.get('/users', userController.find);
+route.post('/users/find', userController.find);
 // route.put('/users', userController.update);
 // route.delete('/users', userController.delete);
+route.post('/signin', userController.signin);
 
 module.exports = route;

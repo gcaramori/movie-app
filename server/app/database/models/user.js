@@ -27,11 +27,9 @@ const User = db.define("users", {
     birth: {
         type: DataTypes.DATEONLY,
         allowNull: false
-    },
-    createdAt: {
-        type: DataTypes.DATEONLY,
-        defaultValue: DataTypes.NOW
     }
+}, {
+    timestamps: true
 });
 
 db.sync().then(() => {

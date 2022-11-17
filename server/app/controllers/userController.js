@@ -14,7 +14,7 @@ exports.create = async (req, res) => {
             attributes: ['username'],
             limit: 1,
             where: {
-                email: email   
+                email: email
             }
         });
         
@@ -24,14 +24,14 @@ exports.create = async (req, res) => {
         }
         
         const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
         const createdUser = await UserModel.create({
-        username: req.body.username,
-        password: hashedPassword,
-        email: req.body.email,
-        phone: req.body.phone,
-        birth: req.body.birth
+            username: req.body.username,
+            password: hashedPassword,
+            email: req.body.email,
+            phone: req.body.phone,
+            birth: req.body.birth
         });
 
         const token = jwt.sign({
@@ -39,10 +39,10 @@ exports.create = async (req, res) => {
         },
             process.env.TOKEN_KEY,
         {
-            expiresIn: "2h",
+            expiresIn: "24h",
         });
         
-        createdUser.dataValues.token = token;
+        res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
         
         if(createdUser && token) res.status(200).send(createdUser);
         else res.status(500).send('Token error!');
@@ -77,13 +77,13 @@ exports.signin = async (req, res) => {
             { user_id: user[0].userID, email },
                 process.env.TOKEN_KEY,
             {
-                expiresIn: "2h",
+                expiresIn: "24h",
             }
         );
-
-        user.token = token;
         
-        if(token) res.status(200).send(user);
+        res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
+        console.log(token);
+        if(token) res.status(200).send(user[0]);
         else res.status(500).send('Token error!');
     }
     catch(err) {
@@ -91,7 +91,7 @@ exports.signin = async (req, res) => {
     }
 }
 
-exports.find = async (req, res) => {
+exports.find = (req, res) => {
     try {
         const filters = req.body.filters ? req.body.filters : '';
         const limit = req.body.limit ? req.body.limit : 10;
@@ -111,5 +111,73 @@ exports.find = async (req, res) => {
     }
     catch(err) {
         res.status(500).send(`Error when trying to find users: ${err}`);
+    }
+}
+
+exports.update = async (req, res) => {
+    try {
+        const { userID, ...otherProps } = req.body;
+
+        if(!userID) {
+            res.status(410).send('Must pass user id parameter!');
+            return;
+        }
+
+        const searchUser = await UserModel.findAll({
+            attributes: ['username'],
+            limit: 1,
+            where: {
+                userID: userID
+            }
+        });
+        
+        if(searchUser.length <= 0) {
+            res.status(411).send("User not exists");
+            return;
+        }
+
+        UserModel.update({ ...otherProps }, {
+            where: {
+              userID: userID
+            }
+        })
+        .then(response => {
+            console.log(response);
+            if(response) res.status(200).send('User updated with success!');
+            else res.status(410).send('User update failed!');
+        })
+        .catch(err => {
+            res.status(500).send(`Error when trying to update this user: ${userId}. Error: ${err}`);
+        });
+    }
+    catch(err) {
+        res.status(500).send(`Error when trying to update user: ${err}`);
+    }
+}
+
+exports.delete = async (req, res) => {
+    try {
+        const { userID } = req.body;
+
+        if(!userID) {
+            res.status(410).send('Must pass user id parameter');
+            return;
+        }
+
+        UserModel.destroy({
+            where: {
+              userID: userID
+            }
+        })
+        .then(response => {
+            if(response) res.status(200).send('User deleted with success!');
+            else res.status(410).send('User not exists!');
+        })
+        .catch(err => {
+            res.status(500).send(`Error when trying to delete this user: ${userID}. Error: ${err}`);
+        });
+    }
+    catch(err) {
+        res.status(500).send(`Error when trying to delete user: ${err}`);
     }
 }

@@ -10,9 +10,9 @@ exports.create = async (req, res) => {
             res.status(400).send("Lack of necessary data!");
         }
 
-        const searchUser = User.find({ email: email });
+        const searchUser = await User.find({ email: email });
         
-        if(searchUser.email) {
+        if(searchUser[0]) {
             res.status(401).send("User already exists");
             return;
         }
@@ -33,7 +33,6 @@ exports.create = async (req, res) => {
         createdUser
         .save(createdUser)
         .then(response => {
-            console.log(response)
             const token = jwt.sign({
                 user_id: response._id, email
             },
@@ -66,21 +65,15 @@ exports.signin = async (req, res) => {
             res.status(402).send("Lack of necessary data!");
         }
         
-        const user = await UserModel.findAll({
-            attributes: ['userID', 'username', 'password'],
-            limit: 1,
-            where: {
-                email: email
-            }
-        });
+        const user = await User.find({ email: email });
         
-        if(!user || !(await bcrypt.compare(password, user[0].password))) {
-            res.status(405).send("Invalid credentials");
+        if(!user[0] || !(await bcrypt.compare(password, user[0].password))) {
+            res.status(400).send("Invalid credentials");
             return;
         }
 
         const token = jwt.sign(
-            { user_id: user[0].userID, email },
+            { user_id: user[0]._id, email },
                 process.env.TOKEN_KEY,
             {
                 expiresIn: "24h",
@@ -88,6 +81,7 @@ exports.signin = async (req, res) => {
         );
         
         if(token) {
+            console.log(token);
             res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
             res.status(200).send(user[0]);
         }
@@ -100,20 +94,32 @@ exports.signin = async (req, res) => {
 
 exports.find = (req, res) => {
     try {
-        const filters = req.body.filters ? req.body.filters : '';
+        const filter = req.body.filter ? req.body.filter : {};
         const limit = req.body.limit ? req.body.limit : 10;
-        const attributes = req.body.attributes ? req.body.attributes : false;
+        const select = req.body.select ? req.body.select : {};
+        const sort = req.body.sort ? req.body.sort : { name: 1 };
 
-        if(typeof filters !== 'object') {
-            res.status(410).send('Filters parameter must be an object!');
+        if(typeof filter !== 'object') {
+            res.status(400).send('Filter parameter must be an object!');
+            return;
+        }
+        
+        if(typeof select !== 'object') {
+            res.status(400).send('Select parameter must be an object!');
             return;
         }
 
-        UserModel.findAll({
-            attributes: attributes,
-            limit: limit,
-            where: filters
+        if(typeof sort !== 'object') {
+            res.status(400).send('Sort parameter must be an object!');
+            return;
+        }
+
+        User.find({
+            ...filter
         })
+        .limit(limit)
+        .select(select)
+        .sort(sort)
         .then(response => {
             res.status(200).send(response);
         })
@@ -128,38 +134,32 @@ exports.find = (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const { userID, ...otherProps } = req.body;
+        const { email, ...parameters } = req.body;
 
-        if(!userID) {
-            res.status(410).send('Must pass user id parameter!');
+        if(!email) {
+            res.status(400).send('Must pass user id parameter!');
             return;
         }
 
-        const searchUser = await UserModel.findAll({
-            attributes: ['username'],
-            limit: 1,
-            where: {
-                userID: userID
-            }
-        });
+        const searchUser = await User.find({ email: email });
         
-        if(searchUser.length <= 0) {
-            res.status(411).send("User not exists");
+        if(!searchUser[0]) {
+            res.status(400).send("User not exists");
             return;
         }
-
-        UserModel.update({ ...otherProps }, {
-            where: {
-              userID: userID
-            }
+        
+        User.findOneAndUpdate({
+            email: email
+        },
+        { 
+            ...parameters
         })
         .then(response => {
-            console.log(response);
             if(response) res.status(200).send('User updated with success!');
-            else res.status(410).send('User update failed!');
+            else res.status(400).send('User update failed!');
         })
         .catch(err => {
-            res.status(500).send(`Error when trying to update this user: ${userId}. Error: ${err}`);
+            res.status(500).send(`Error when trying to update this user: ${email}. Error: ${err}`);
         });
     }
     catch(err) {
@@ -169,24 +169,24 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const { userID } = req.body;
+        const { email, ...parameters } = req.body;
 
-        if(!userID) {
-            res.status(410).send('Must pass user id parameter');
+        if(!email) {
+            res.status(400).send('Must pass user id parameter');
             return;
         }
 
-        UserModel.destroy({
-            where: {
-              userID: userID
-            }
+        User.findOneAndDelete({
+            email,
+            ...parameters
         })
         .then(response => {
+            console.log(response);
             if(response) res.status(200).send('User deleted with success!');
-            else res.status(410).send('User not exists!');
+            else res.status(400).send('User not exists!');
         })
         .catch(err => {
-            res.status(500).send(`Error when trying to delete this user: ${userID}. Error: ${err}`);
+            res.status(500).send(`Error when trying to delete this user: ${email}. Error: ${err}`);
         });
     }
     catch(err) {

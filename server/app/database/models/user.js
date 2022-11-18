@@ -31,14 +31,13 @@ const UserSchema = new mongoose.Schema({
         required: true
     },
     profile_pic: {
-        type: String,
-        required: true
+        type: String
     }
 }, { timestamps: true });
 
-// UserSchema.pre('deleteMany', function(next) {
-//     var user = this;
-//     user.model('Store').deleteOne({ 'users.id': user._id }, next);
-// });
+UserSchema.pre('deleteMany', function(next) {
+    var user = this;
+    user.model('WatchList').deleteOne({ 'userId': email }, next);
+});
 
 module.exports = mongoose.model('User', UserSchema);

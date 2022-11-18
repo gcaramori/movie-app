@@ -1,28 +1,17 @@
-const { DataTypes } = require('sequelize');
-const db = require('../connection');
+const mongoose = require('mongoose');
 
-const WatchList = db.define("watch_list", {
-    movieID: {
-        primaryKey: true,
-        type: DataTypes.INTEGER,
-        allowNull: false
+const WatchListSchema = new mongoose.Schema({
+    movieId: {
+        type: String,
+        required: true
     },
-    userID: {
-        type: DataTypes.STRING,
-        allowNull: false
+    userId: {
+        type: String,
+        required: true
     },
-    status: {
-        type: DataTypes.STRING,
-        allowNull: false
+    seen: {
+        type: Boolean
     }
-}, {
-    timestamps: true
-});
+}, { timestamps: true });
 
-db.sync().then(() => {
-   console.log('Watch list table created successfully!');
-}).catch((error) => {
-   console.error('Unable to create table : ', error);
-});
-
-module.exports = WatchList;
+module.exports = mongoose.model('Watch_list', WatchListSchema);

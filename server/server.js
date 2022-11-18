@@ -2,10 +2,8 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
-const path = require('path');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
 const helmet = require('helmet');
 const connectDB = require('./app/database/connection');
 
@@ -14,19 +12,19 @@ const app = express();
 dotenv.config({ path: 'config.env' });
 const PORT = process.env.PORT || 8080;
 
-connectDB();
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(session({
-    name: 'user_session',
-    secret: "xgj2jwwjjas#!dksd11",
-    saveUninitialized: false,
-    resave: false,
-    cookie : {
-      maxAge: 1000 * 60 * 60 * 24
-    }
-}));
+
+connectDB();
+// app.use(session({
+//     name: 'user_session',
+//     secret: "xgj2jwwjjas#!dksd11",
+//     saveUninitialized: false,
+//     resave: false,
+//     cookie : {
+//       maxAge: 1000 * 60 * 60 * 24
+//     }
+// }));
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(cookieParser());

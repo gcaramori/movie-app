@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../database/models/user');
 
-exports.create = async (req, res) => {Q
+exports.create = async (req, res) => {
     try {
         const { username, password, email, name, phone, birth, profile_pic } = req.body;
 
@@ -10,9 +10,9 @@ exports.create = async (req, res) => {Q
             res.status(400).send("Lack of necessary data!");
         }
 
-        const searchUser = await User.find({ email: email });
+        const searchUser = User.find({ email: email });
         
-        if(searchUser.length > 0) {
+        if(searchUser.email) {
             res.status(401).send("User already exists");
             return;
         }
@@ -33,9 +33,9 @@ exports.create = async (req, res) => {Q
         createdUser
         .save(createdUser)
         .then(response => {
-            console.log(respeonse)
+            console.log(response)
             const token = jwt.sign({
-                user_id: createResponse._id, email
+                user_id: response._id, email
             },
                 process.env.TOKEN_KEY,
             {

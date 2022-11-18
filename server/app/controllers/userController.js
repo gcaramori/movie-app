@@ -1,22 +1,16 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const UserModel = require('../database/models/user');
+const User = require('../database/models/user');
 
-exports.create = async (req, res) => {
+exports.create = async (req, res) => {Q
     try {
-        const { username, password, email, phone, birth } = req.body;
+        const { username, password, email, name, phone, birth, profile_pic } = req.body;
 
-        if(!(username, password, email, phone, birth)) {
+        if(!username || !password || !email || !name || !phone || !birth) {
             res.status(400).send("Lack of necessary data!");
         }
 
-        const searchUser = await UserModel.findAll({
-            attributes: ['username'],
-            limit: 1,
-            where: {
-                email: email
-            }
-        });
+        const searchUser = await User.find({ email: email });
         
         if(searchUser.length > 0) {
             res.status(401).send("User already exists");
@@ -26,26 +20,38 @@ exports.create = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const createdUser = await UserModel.create({
-            username: req.body.username,
+        const createdUser = new User({
+            username: username,
             password: hashedPassword,
-            email: req.body.email,
-            phone: req.body.phone,
-            birth: req.body.birth
+            email: email,
+            name: name,
+            phone: phone,
+            birth: birth,
+            profile_pic: profile_pic
         });
 
-        const token = jwt.sign({
-            user_id: createdUser.userID, email
-        },
-            process.env.TOKEN_KEY,
-        {
-            expiresIn: "24h",
+        createdUser
+        .save(createdUser)
+        .then(response => {
+            console.log(respeonse)
+            const token = jwt.sign({
+                user_id: createResponse._id, email
+            },
+                process.env.TOKEN_KEY,
+            {
+                expiresIn: "24h",
+            });
+            
+            res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
+            
+            if(createdUser && token) res.status(200).send(createdUser);
+            else res.status(500).send('Token error!');
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while creating an user"
+            });
         });
-        
-        res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
-        
-        if(createdUser && token) res.status(200).send(createdUser);
-        else res.status(500).send('Token error!');
     }
     catch(err) {
         res.status(500).send(`Error when creating user: ${err}`);
@@ -81,9 +87,10 @@ exports.signin = async (req, res) => {
             }
         );
         
-        res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
-        console.log(token);
-        if(token) res.status(200).send(user[0]);
+        if(token) {
+            res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
+            res.status(200).send(user[0]);
+        }
         else res.status(500).send('Token error!');
     }
     catch(err) {
@@ -96,6 +103,11 @@ exports.find = (req, res) => {
         const filters = req.body.filters ? req.body.filters : '';
         const limit = req.body.limit ? req.body.limit : 10;
         const attributes = req.body.attributes ? req.body.attributes : false;
+
+        if(typeof filters !== 'object') {
+            res.status(410).send('Filters parameter must be an object!');
+            return;
+        }
 
         UserModel.findAll({
             attributes: attributes,

@@ -1,41 +1,44 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const db = require('../connection');
+const mongoose = require('mongoose');
 
-const User = db.define("users", {
-    userID: {
-        primaryKey: true,
-        type: DataTypes.UUID,
-        defaultValue: Sequelize.UUIDV4,
-        allowNull: false
-    },
+const UserSchema = new mongoose.Schema({
     username: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: String,
+        required: true,
+        min: 3,
+        max: 20
     },
     email: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: String,
+        required: true,
+        max: 50,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true,
+        min: 6      
+    },
+    name: {
+        type: String,
+        required: true
     },
     phone: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: String,
+        required: true
     },
     birth: {
-        type: DataTypes.DATEONLY,
-        allowNull: false
+        type: String,
+        required: true
+    },
+    profile_pic: {
+        type: String,
+        required: true
     }
-}, {
-    timestamps: true
-});
+}, { timestamps: true });
 
-db.sync().then(() => {
-   console.log('Users table created successfully!');
-}).catch((error) => {
-   console.error('Unable to create table : ', error);
-});
+// UserSchema.pre('deleteMany', function(next) {
+//     var user = this;
+//     user.model('Store').deleteOne({ 'users.id': user._id }, next);
+// });
 
-module.exports = User;
+module.exports = mongoose.model('User', UserSchema);

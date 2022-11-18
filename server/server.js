@@ -7,11 +7,14 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const helmet = require('helmet');
+const connectDB = require('./app/database/connection');
 
 const app = express();
 
 dotenv.config({ path: 'config.env' });
 const PORT = process.env.PORT || 8080;
+
+connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

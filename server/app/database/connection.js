@@ -1,27 +1,21 @@
-const Sequelize = require('sequelize');
+const mongoose = require('mongoose');
 
-const sequelize = new Sequelize(
-    process.env.DATABASE_NAME,
-    process.env.DATABASE_USERNAME,
-    process.env.DATABASE_PASSWORD,
-    {
-        host: process.env.DATABASE_HOST,
-        dialect: 'mysql',
-        pool: {
-            max: 5,
-            min: 0,
-            acquire: 30000,
-            idle: 10000
-        }
+const options = {
+    useNewUrlParser: true,
+    connectTimeoutMS: 10000
+};
+
+const connectDB = () => {
+    try {
+        //mongodb connection string
+        mongoose.connect(process.env.MONGO_URI, options, () => {
+            console.log(`MongoDB Connected!`);
+        });
     }
-);
+    catch(err) {
+        console.log(err);
+        process.exit(1);
+    }
+}
 
-sequelize.authenticate()
-.then(() => {
-    console.log('MySQL Connected!');
-})
-.catch((error) => {
-    console.error('Unable to connect to the database: ', error);
-});
-
-module.exports = sequelize;
+module.exports = connectDB;

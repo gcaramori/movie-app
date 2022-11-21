@@ -1,8 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../database/models/user');
-var passport = require('passport');
-var GoogleStrategy = require('passport-google-oidc');
 
 exports.create = async (req, res) => {
     try {
@@ -92,10 +90,6 @@ exports.signin = async (req, res) => {
     catch(err) {
         res.status(500).send(`Signin error: ${err}`);
     }
-}
-
-exports.signInWithGoogle = (req, res) => {
-    
 }
 
 exports.find = (req, res) => {

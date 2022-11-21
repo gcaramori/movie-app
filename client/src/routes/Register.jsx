@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const Login = ({ setToken }) => {
+const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = async (data) => {
-        await fetch('http://localhost:8080/signin', {
+        await fetch('http://localhost:8080/users', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -17,16 +17,7 @@ const Login = ({ setToken }) => {
         })
         .then(data => data.json())
         .then(parsedData => {
-            if(parsedData.user && parsedData.token) {
-                const token = parsedData.token;
-                setToken(token);
-
-                const tomorrow = new Date(new Date().getTime() + (24 * 60 * 60 * 1000));
-                document.cookie = `jwtToken=${token};expires=${tomorrow.toGMTString()}`;
-            }
-            else {
-                alert('Login e/ou senha incorretos!');
-            }
+            
         })
         .catch(err => {
             console.log(err);
@@ -34,16 +25,14 @@ const Login = ({ setToken }) => {
     }
 
     return (
-      <div id="login" className="flex justify-center items-center w-full h-full font-main"> 
-        <div id="loginForm" className="flex flex-col justify-start items-center base:h-full md:h-[650px] base:w-full md:w-[550px] rounded-lg bg-darkGray p-10">
-            <div id="logo" className="block h-56 w-56 relative mx-auto overflow-hidden mb-6">
-                <img src="/logo.png" className="block w-full h-full relative object-contain" alt="logo" />
-            </div>
-            <h1 className="text-2xl text-gray-200 font-semibold mb-6 drop-shadow-lg">Login</h1>
+      <div id="register" className="flex flex-col justify-center items-center w-full h-full font-main py-10">
+        <h1 className="block text-3xl text-gray-300 mb-4 font-semibold">Quer virar um expert em filmes e séries?</h1>
+        <h4 className="block text-xl text-gray-200 mb-8 opacity-90 font-medium">Cadastre-se no FilmeReviews e começe agora mesmo!</h4>
+        <div id="registerForm" className="flex flex-col justify-center items-center base:h-full md:h-[90%] base:w-full md:w-[90%] lg:w-[750px] rounded-lg bg-darkGray p-10">
             <form className="flex flex-col justify-start items-center gap-6 h-[90%] w-full" onSubmit={handleSubmit(onSubmit)}>
                 <div className="block mb-8 base:w-[95%] md:w-[80%]">
                     <input type="text" className="block h-10 w-full bg-gray-800 border-2 border-mainRed rounded-full text-sm font-semibold text-white px-4 transition-all" placeholder="Seu email" {
-                        ...register("email", { 
+                        ...register("email", {
                             required: true,
                             pattern: {
                                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
@@ -66,13 +55,11 @@ const Login = ({ setToken }) => {
                 </div>
                 <div className="flex justify-between items-center base:w-[95%] md:w-[80%]">
                     <button type="submit" className="inline-block text-center text-md font-semibold py-3 px-10 bg-mainRed text-white rounded-lg drop-shadow-lg hover:bg-darkGray hover:text-white transition-all">Login</button>
-                    <Link className="inline-block text-center text-md font-semibold py-3 px-10 bg-gray-500 text-white rounded-lg drop-shadow-lg hover:bg-mainRed hover:text-white transition-all" to="/register">Cadastre-se</Link>
                 </div>
             </form>
-            <Link className="block text-sm text-gray-300 font-medium text-left relative top-4 w-[80%] mx-auto transition-all hover:text-gray-50" to="/password">Esqueceu sua senha? Clique aqui para recuperar.</Link>
         </div>
       </div>
     );
 }
 
-export default Login;
+export default Register;

@@ -7,7 +7,7 @@ const Navbar = () => {
     // const { currentUser } = useContext(UserContext);
     // const { isCartOpen } = useContext(CartContext);
     
-    return(
+    return (
         <div id="navbar" className="flex justify-start items-center w-full ml-[13rem] py-4 px-20 text-md font-main border-b border-b-gray-900">
             <Link className="nav-link mr-10 active drop-shadow-md transition-all font-semibold" to='/movies'>
                 Filmes  

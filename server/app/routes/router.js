@@ -1,9 +1,11 @@
 const express = require('express');
 const route = express.Router();
+const passport = require('passport');
 const userController = require('../controllers/userController');
 const watchListController = require('../controllers/watchListController');
 const reviewController = require('../controllers/reviewController');
 const auth = require("../middleware/auth");
+
 
 /**
  * @description Root route

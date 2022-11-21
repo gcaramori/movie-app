@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../database/models/user');
+var passport = require('passport');
+var GoogleStrategy = require('passport-google-oidc');
 
 exports.create = async (req, res) => {
     try {
@@ -13,7 +15,7 @@ exports.create = async (req, res) => {
         const searchUser = await User.find({ email: email });
         
         if(searchUser[0]) {
-            res.status(401).send("User already exists");
+            res.status(400).send("User already exists");
             return;
         }
         
@@ -61,14 +63,15 @@ exports.signin = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        if(!(email && password)) {
-            res.status(402).send("Lack of necessary data!");
+        if(!email || !password) {
+            res.status(400).send({ message: "Lack of necessary data!" });
+            return;
         }
         
         const user = await User.find({ email: email });
         
         if(!user[0] || !(await bcrypt.compare(password, user[0].password))) {
-            res.status(400).send("Invalid credentials");
+            res.status(400).send({ message: "Invalid credentials" });
             return;
         }
 
@@ -81,15 +84,18 @@ exports.signin = async (req, res) => {
         );
         
         if(token) {
-            console.log(token);
             res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
-            res.status(200).send(user[0]);
+            res.status(200).send({ user: user[0], token: token });
         }
         else res.status(500).send('Token error!');
     }
     catch(err) {
         res.status(500).send(`Signin error: ${err}`);
     }
+}
+
+exports.signInWithGoogle = (req, res) => {
+    
 }
 
 exports.find = (req, res) => {

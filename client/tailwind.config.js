@@ -24,10 +24,14 @@ module.exports = {
       // => @media (min-width: 1536px) { ... }
     },
     fontFamily: {
-      main: ['Inter', 'sans-serif'],
+      main: ['Quicksand', 'sans-serif'],
     },
     colors: {
-      'main-blue': "#002e72",
+      'background': "#191d1f",
+      'mainRed': "#d63031",
+      'mint': "#00b894",
+      'backgroundLight': "#636e72",
+      'darkGray': '#1a171e',
       black: colors.black,
       white: colors.white,
       gray: colors.gray,

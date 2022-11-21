@@ -1,39 +1,26 @@
-const { DataTypes } = require('sequelize');
-const db = require('../connection');
-const userModel = require('./user');
+const mongoose = require('mongoose');
 
-const Reviews = db.define("reviews", {
-    reviewID: {
-        primaryKey: true,
-        type: DataTypes.INTEGER,
-        autoIncrement: true
+const ReviewSchema = new mongoose.Schema({
+    movieId: {
+        type: String,
+        required: true
     },
-    movieID: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    userID: {
-        type: DataTypes.STRING,
-        allowNull: false
+    userId: {
+        type: String,
+        required: true
     },
     title: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: String,
+        required: true
     },
     content: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: String,
+        required: true
+    },
+    avaliation: {
+        type: Number,
+        required: true
     }
-}, {
-    timestamps: true
-});
+}, { timestamps: true });
 
-Reviews.hasMany(userModel);
-
-db.sync().then(() => {
-   console.log('Reviews table created successfully!');
-}).catch((error) => {
-   console.error('Unable to create table : ', error);
-});
-
-module.exports = Reviews;
+module.exports = mongoose.model('Reviews', ReviewSchema);

@@ -1,19 +1,18 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const WatchList = require('../database/models/watchList');
 
-exports.create = async (req, res) => {
+exports.add = async (req, res) => {
     try {
-        const { movieId, userId, ...otherFields } = req.body;
+        const { movieId, userId } = req.body;
 
         if(!movieId || !userId) {
             res.status(400).send("Lack of necessary data!");
+            return;
         }
 
         const createdWatchList = new WatchList({
             movieId: movieId,
             userId: userId,
-            ...otherFields
+            seen: false
         });
 
         createdWatchList
@@ -102,9 +101,9 @@ exports.updateStatus = async (req, res) => {
     }
 }
 
-exports.delete = async (req, res) => {
+exports.remove = async (req, res) => {
     try {
-        const { userId, movieId, ...parameters } = req.body;
+        const { userId, movieId } = req.body;
 
         if(!userId || !movieId) {
             res.status(400).send('Lack of necessary data!');
@@ -112,18 +111,18 @@ exports.delete = async (req, res) => {
         }
 
         WatchList.findOneAndDelete({
-            userId,
-            ...parameters
+            userId: userId,
+            movieId: movieId
         })
         .then(response => {
-            if(response) res.status(200).send('Watch list movie deleted with success!');
-            else res.status(400).send('Watch list movie not exists!');
+            if(response) res.status(200).send('Watch list movie removed with success!');
+            else res.status(400).send('Watch list movie or user not exists!');
         })
         .catch(err => {
-            res.status(500).send(`Error when trying to delete the movie from this user: ${email} watch list. Error: ${err}`);
+            res.status(500).send(`Error when trying to remove the movie from this user: ${email} watch list. Error: ${err}`);
         });
     }
     catch(err) {
-        res.status(500).send(`Error when trying to delete user: ${err}`);
+        res.status(500).send(`Error when trying to remove movie from watch list. Error: ${err}`);
     }
 }

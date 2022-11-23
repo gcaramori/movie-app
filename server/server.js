@@ -7,7 +7,6 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const connectDB = require('./app/database/connection');
-const passport = require('passport');
 
 const app = express();
 
@@ -43,8 +42,6 @@ app.use(
     }
   })
 );
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use('/', require('./app/routes/router'));
 

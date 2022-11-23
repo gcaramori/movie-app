@@ -15,9 +15,5 @@ export const UserProvider = ({ children }) => {
         if(getCookie('user')) setCurrentUser({ user: JSON.parse(getCookie('user')), token: getCookie('jwtToken') });
     }, []);
 
-    return (
-        <UserContext.Provider value={value}>
-			{children}
-		</UserContext.Provider>
-    )
+    return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AiFillHome, AiOutlineUnorderedList, AiFillStar, AiFillEye, AiFillCompass } from 'react-icons/ai';
 import { MdRateReview } from 'react-icons/md';
@@ -9,23 +9,21 @@ import { deleteCookie } from "../utils/helper";
 // import { CartContext } from "../../contexts/cart.context";
 
 const Sidebar = () => {
-    const { currentUser, setCurrentUser } = useContext(UserContext);
+    const { setCurrentUser } = useContext(UserContext);
     // const { isCartOpen } = useContext(CartContext);
     
     const handleExit = async () => {
         await fetch('http://localhost:8080/logout')
-        .then(response => {
-            if(response) setCurrentUser(false);
-        });
+        .then(data => data.json())
+        .then(parsedData => {
+            if(parsedData)  {
+                setCurrentUser(false);
+
+                deleteCookie('jwtToken');
+                deleteCookie('user');
+            }
+        })
     }
-
-    useEffect(() => {
-        if(!currentUser) {
-            deleteCookie('jwtToken');
-            deleteCookie('user');
-        }
-    });
-
     return(
         <div id="sidebar" className="fixed top-0 left-0 h-full w-[15rem] py-20 font-main bg-darkGray">
             <div className="sidebarSection">

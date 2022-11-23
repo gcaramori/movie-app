@@ -1,23 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { UserContext } from './contexts/userContext';
 import Login from './routes/Login';
+import Register from './routes/Register';
 import Navbar from './routes/Navbar';
 import Sidebar from './routes/Sidebar';
 import Home from './routes/Home';
 import Movies from './routes/Movies';
-import Register from './routes/Register';
 import '@fontsource/quicksand';
 
 function App() {
-  const [route, setRoute] = useState(null);
-  const [token, setToken] = useState(null);
+  const { currentUser } = useContext(UserContext);
 
-  useEffect(() => {
-    if(document.cookie !== '' && document.cookie.split('jwtToken=')[1] !== '') setToken(true);
-    else setToken(false);
-  }, []);
-  
-  if(token === false) {
+  if(!currentUser) {
     return (
       <div id="application">
         <Routes>
@@ -25,7 +20,7 @@ function App() {
           <Route path="/register" element={<Register />} />
         </Routes>
       </div>
-    );
+    )
   }
 
   return (
@@ -35,7 +30,6 @@ function App() {
       <div className="block ml-[13rem]">
         <Routes>
           <Route index element={<Home />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/movies" element={<Movies />} />
         </Routes>
       </div>

@@ -1,16 +1,31 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { AiFillHome, AiOutlineUnorderedList, AiFillStar, AiFillEye, AiFillCompass } from 'react-icons/ai';
 import { MdRateReview } from 'react-icons/md';
 import { FaCog } from 'react-icons/fa';
 import { IoIosExit } from 'react-icons/io';
-// import { UserContext } from "../../contexts/user.context";
+import { UserContext } from "../contexts/userContext";
+import { deleteCookie } from "../utils/helper";
 // import { CartContext } from "../../contexts/cart.context";
 
 const Sidebar = () => {
-    // const { currentUser } = useContext(UserContext);
+    const { currentUser, setCurrentUser } = useContext(UserContext);
     // const { isCartOpen } = useContext(CartContext);
     
+    const handleExit = async () => {
+        await fetch('http://localhost:8080/logout')
+        .then(response => {
+            if(response) setCurrentUser(false);
+        });
+    }
+
+    useEffect(() => {
+        if(!currentUser) {
+            deleteCookie('jwtToken');
+            deleteCookie('user');
+        }
+    });
+
     return(
         <div id="sidebar" className="fixed top-0 left-0 h-full w-[15rem] py-20 font-main bg-darkGray">
             <div className="sidebarSection">
@@ -71,7 +86,7 @@ const Sidebar = () => {
             </div>
             <div className="block absolute bottom-8 left-[1.5rem]">  
                 <IoIosExit size="1.5em" className="inline-block mr-4 text-mainRed" />
-                <Link className="sidebar-link mr-4  transition-all font-semibold" to='/logout'>
+                <Link className="sidebar-link mr-4  transition-all font-semibold" onClick={handleExit}>
                     Sair
                 </Link>
             </div>

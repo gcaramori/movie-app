@@ -1,7 +1,10 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { UserContext } from "../contexts/userContext";
 
-const Login = ({ setToken }) => {
+const Login = () => {
+    const { setCurrentUser } = useContext(UserContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = async (data) => {
         await fetch('http://localhost:8080/signin', {
@@ -19,10 +22,13 @@ const Login = ({ setToken }) => {
         .then(parsedData => {
             if(parsedData.user && parsedData.token) {
                 const token = parsedData.token;
-                setToken(token);
+                const user = parsedData.user;
 
                 const tomorrow = new Date(new Date().getTime() + (24 * 60 * 60 * 1000));
                 document.cookie = `jwtToken=${token};expires=${tomorrow.toGMTString()}`;
+                document.cookie = `user=${JSON.stringify(user)};expires=${tomorrow.toGMTString()}`;
+
+                setCurrentUser({ user: user, token: token });
             }
             else {
                 alert('Login e/ou senha incorretos!');
@@ -40,8 +46,8 @@ const Login = ({ setToken }) => {
                 <img src="/logo.png" className="block w-full h-full relative object-contain" alt="logo" />
             </div>
             <h1 className="text-2xl text-gray-200 font-semibold mb-6 drop-shadow-lg">Login</h1>
-            <form className="flex flex-col justify-start items-center gap-6 h-[90%] w-full" onSubmit={handleSubmit(onSubmit)}>
-                <div className="block mb-8 base:w-[95%] md:w-[80%]">
+            <form className="flex flex-col justify-start items-center gap-1 h-[90%] w-full" onSubmit={handleSubmit(onSubmit)}>
+                <div className="block mb-8 xl:h-[4.5rem] base:w-[95%] md:w-[80%] relative">
                     <input type="text" className="block h-10 w-full bg-gray-800 border-2 border-mainRed rounded-full text-sm font-semibold text-white px-4 transition-all" placeholder="Seu email" {
                         ...register("email", { 
                             required: true,
@@ -51,17 +57,17 @@ const Login = ({ setToken }) => {
                         })
                     } />
                     {
-                        errors.email && <span className="block mt-1 pl-3 text-sm text-white opacity-80 transition-all">Digite o email corretamente, por favor!</span>
+                        errors.email && <span className="block mt-1 pl-3 text-sm text-white opacity-80 transition-all absolute bottom-0 left-0">Digite o email corretamente, por favor!</span>
                     }  
                 </div>
-                <div className="block mb-8 base:w-[95%] md:w-[80%]">
+                <div className="block mb-8 xl:h-[4.5rem] base:w-[95%] md:w-[80%] relative">
                     <input type="password" className="block h-10 w-full bg-gray-800 border-2 border-mainRed rounded-full text-sm font-semibold text-white px-4 transition-all" placeholder="Sua senha" {
                         ...register("password", {
                             required: true
                         })
                     } />
                     {   
-                        errors.password && <span className="block mt-1 pl-3 text-sm text-white opacity-80 transition-all">Digite sua senha, por favor!</span>
+                        errors.password && <span className="block mt-1 pl-3 text-sm text-white opacity-80 transition-all absolute bottom-0 left-0">Digite sua senha, por favor!</span>
                     }
                 </div>
                 <div className="flex justify-between items-center base:w-[95%] md:w-[80%]">

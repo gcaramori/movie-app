@@ -27,7 +27,7 @@ function App() {
     <div id="application">
       <Navbar />
       <Sidebar />
-      <div className="block ml-[13rem]">
+      <div className="block ml-[15rem]">
         <Routes>
           <Route index element={<Home />} />
           <Route path="/movies" element={<Movies />} />

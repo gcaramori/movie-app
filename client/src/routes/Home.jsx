@@ -10,7 +10,7 @@ const Home = () => {
         .then(data => data.json())
         .then(parsedData => {
           setMovies(parsedData.results);
-        })
+        });
       }
 
       getMovies();

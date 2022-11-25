@@ -53,7 +53,7 @@ const Register = () => {
 
     return (
       <>
-        <SuccessModal isOpen={isOpen} successMessage='Seu cadastro foi criado com sucesso!' title='Feito!' />
+        <SuccessModal isOpen={isOpen} successMessage='Sua senha foi trocada com sucesso!' title='Feito!' />
         <div id="register" className="flex flex-col justify-center items-center w-full h-full font-main py-10 relative">
             <Link to='/' className="absolute top-8 left-10 block h-20 w-20 text-white">
                 <BiArrowBack size='2.5em'/>
@@ -75,14 +75,18 @@ const Register = () => {
                     <div className="block mb-8 xl:h-[4.5rem] base:w-[95%] md:w-[80%] relative">
                         <input type="text" className="block h-10 w-full bg-gray-800 border-2 border-mainRed rounded-full text-sm font-semibold text-white px-4 transition-all" placeholder="Seu email" {
                             ...register("email", {
-                                required: true,
+                                required: {
+                                    value: true,
+                                    message: "Digite o email, por favor!"
+                                },
                                 pattern: {
-                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                    message: "Digite o email corretamente, por favor!"
                                 }
                             })
                         } />
                         {
-                            errors.email && <span className="block mt-1 pl-3 text-sm text-white opacity-80 transition-all absolute bottom-[-13px] left-0">Digite o email corretamente, por favor!</span>
+                            errors.email && <span className="block mt-1 pl-3 text-sm text-white opacity-80 transition-all absolute bottom-[-13px] left-0">{errors.email.message}</span>
                         }  
                     </div>
                     <div className="block mb-8 xl:h-[4.5rem] base:w-[95%] md:w-[80%] relative">

@@ -623,8 +623,8 @@ video {
   margin-right: auto;
 }
 
-.ml-\[13rem\] {
-  margin-left: 13rem;
+.ml-\[15rem\] {
+  margin-left: 15rem;
 }
 
 .mb-3 {
@@ -655,6 +655,10 @@ video {
   margin-top: 0.25rem;
 }
 
+.ml-\[13rem\] {
+  margin-left: 13rem;
+}
+
 .mr-10 {
   margin-right: 2.5rem;
 }
@@ -669,10 +673,6 @@ video {
 
 .mt-6 {
   margin-top: 1.5rem;
-}
-
-.ml-\[15rem\] {
-  margin-left: 15rem;
 }
 
 .block {
@@ -743,8 +743,12 @@ video {
   width: 15rem;
 }
 
-.w-\[90\%\] {
-  width: 90%;
+.w-32 {
+  width: 8rem;
+}
+
+.w-40 {
+  width: 10rem;
 }
 
 .flex-shrink-0 {
@@ -893,10 +897,6 @@ video {
   padding: 0.5rem;
 }
 
-.p-1 {
-  padding: 0.25rem;
-}
-
 .p-10 {
   padding: 2.5rem;
 }
@@ -916,14 +916,14 @@ video {
   padding-bottom: 0.5rem;
 }
 
-.px-10 {
-  padding-left: 2.5rem;
-  padding-right: 2.5rem;
-}
-
 .py-4 {
   padding-top: 1rem;
   padding-bottom: 1rem;
+}
+
+.px-10 {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
 }
 
 .px-20 {
@@ -953,10 +953,6 @@ video {
   padding-left: 0.75rem;
 }
 
-.pl-\[15rem\] {
-  padding-left: 15rem;
-}
-
 .text-left {
   text-align: left;
 }
@@ -967,6 +963,11 @@ video {
 
 .font-main {
   font-family: Quicksand, sans-serif;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
 .text-lg {
@@ -982,11 +983,6 @@ video {
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
-}
-
-.text-2xl {
-  font-size: 1.5rem;
-  line-height: 2rem;
 }
 
 .text-3xl {
@@ -1014,6 +1010,11 @@ video {
 
 .leading-6 {
   line-height: 1.5rem;
+}
+
+.text-gray-100 {
+  --tw-text-opacity: 1;
+  color: rgb(243 244 246 / var(--tw-text-opacity));
 }
 
 .text-white {
@@ -1044,11 +1045,6 @@ video {
 .text-mainRed {
   --tw-text-opacity: 1;
   color: rgb(214 48 49 / var(--tw-text-opacity));
-}
-
-.text-gray-100 {
-  --tw-text-opacity: 1;
-  color: rgb(243 244 246 / var(--tw-text-opacity));
 }
 
 .opacity-0 {
@@ -1216,6 +1212,10 @@ body {
   .base\:w-\[95\%\] {
     width: 95%;
   }
+
+  .base\:w-40 {
+    width: 10rem;
+  }
 }
 
 @media (min-width: 420px) {
@@ -1317,6 +1317,10 @@ body {
     height: 90%;
   }
 
+  .md\:h-\[40\%\] {
+    height: 40%;
+  }
+
   .md\:w-\[550px\] {
     width: 550px;
   }
@@ -1327,6 +1331,10 @@ body {
 
   .md\:w-\[90\%\] {
     width: 90%;
+  }
+
+  .md\:w-52 {
+    width: 13rem;
   }
 }
 

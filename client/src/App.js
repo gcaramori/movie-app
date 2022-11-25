@@ -8,6 +8,7 @@ import Sidebar from './routes/Sidebar';
 import Home from './routes/Home';
 import Movies from './routes/Movies';
 import '@fontsource/quicksand';
+import PasswordRecovery from './routes/PasswordRecovery';
 
 function App() {
   const { currentUser } = useContext(UserContext);
@@ -18,6 +19,7 @@ function App() {
         <Routes>
           <Route index element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/password_recovery" element={<PasswordRecovery />} />
         </Routes>
       </div>
     )

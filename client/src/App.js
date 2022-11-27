@@ -5,8 +5,10 @@ import Login from './routes/Login';
 import Register from './routes/Register';
 import Navbar from './routes/Navbar';
 import Sidebar from './routes/Sidebar';
-import Home from './routes/Home';
 import Movies from './routes/Movies';
+import Series from './routes/Series';
+import TvShows from './routes/TvShows';
+import MovieDetails from './routes/MovieDetails';
 import '@fontsource/quicksand';
 import PasswordRecovery from './routes/PasswordRecovery';
 
@@ -31,8 +33,10 @@ function App() {
       <Sidebar />
       <div className="block ml-[15rem]">
         <Routes>
-          <Route index element={<Home />} />
-          <Route path="/movies" element={<Movies />} />
+          <Route index element={<Movies />} />
+          <Route path="/series" element={<Series />} />
+          <Route path="/tv_shows" element={<TvShows />} />
+          <Route path="/movie" element={<MovieDetails />} />
         </Routes>
       </div>
     </div>

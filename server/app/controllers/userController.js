@@ -95,7 +95,7 @@ exports.signin = async (req, res) => {
 exports.find = (req, res) => {
     try {
         const filter = req.body.filter ? req.body.filter : {};
-        const limit = req.body.limit ? req.body.limit : 10;
+        const limit = req.body.limit ? req.body.limit : 1;
         const select = req.body.select ? req.body.select : {};
         const sort = req.body.sort ? req.body.sort : { name: 1 };
 
@@ -141,6 +141,13 @@ exports.update = async (req, res) => {
             return;
         }
 
+        if(parameters.password) {
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(parameters.password, salt);
+
+            parameters.password = hashedPassword;
+        }
+
         const searchUser = await User.find({ email: email });
         
         if(!searchUser[0]) {
@@ -155,15 +162,15 @@ exports.update = async (req, res) => {
             ...parameters
         })
         .then(response => {
-            if(response) res.status(200).send('User updated with success!');
-            else res.status(400).send('User update failed!');
+            if(response) res.status(200).send({ message: 'User updated with success!' });
+            else res.status(400).send({ message: 'User update failed!' });
         })
         .catch(err => {
-            res.status(500).send(`Error when trying to update this user: ${email}. Error: ${err}`);
+            res.status(500).send({ message: `Error when trying to update this user: ${email}. Error: ${err}` });
         });
     }
     catch(err) {
-        res.status(500).send(`Error when trying to update user: ${err}`);
+        res.status(500).send({ message: `Error when trying to update user: ${err}` });
     }
 }
 

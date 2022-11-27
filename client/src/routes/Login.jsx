@@ -53,7 +53,7 @@ const Login = () => {
                     </div>
                     <h1 className="text-2xl text-gray-200 font-semibold mb-6 drop-shadow-lg">Login</h1>
                     <form className="flex flex-col justify-start items-center gap-1 h-[90%] w-full" onSubmit={handleSubmit(onSubmit)}>
-                        <div className="block mb-8 xl:h-[4.5rem] base:w-[95%] md:w-[80%] relative">
+                        <div className="block mb-8 base: base:h-16 lg:h-[4.2rem] base:w-[95%] md:w-[80%] relative">
                             <input type="text" className="block h-10 w-full bg-gray-800 border-2 border-mainRed rounded-full text-sm font-semibold text-white px-4 transition-all" placeholder="Seu email" {
                                 ...register("email", { 
                                     required: {
@@ -70,7 +70,7 @@ const Login = () => {
                                 errors.email && <span className="block mt-1 pl-3 text-sm text-white opacity-80 transition-all absolute bottom-0 left-0">{errors.email.message}</span>
                             }  
                         </div>
-                        <div className="block mb-8 xl:h-[4.5rem] base:w-[95%] md:w-[80%] relative">
+                        <div className="block mb-8 base:h-16 lg:h-[4.2rem] base:w-[95%] md:w-[80%] relative">
                             <input type="password" className="block h-10 w-full bg-gray-800 border-2 border-mainRed rounded-full text-sm font-semibold text-white px-4 transition-all" placeholder="Sua senha" {
                                 ...register("password", {
                                     required: true
@@ -81,11 +81,11 @@ const Login = () => {
                             }
                         </div>
                         <div className="flex justify-between items-center base:w-[95%] md:w-[80%]">
-                            <button type="submit" className="inline-block text-center text-md font-semibold py-3 px-10 bg-mainRed text-white rounded-lg drop-shadow-lg hover:bg-darkGray hover:text-white transition-all">Login</button>
-                            <Link className="inline-block text-center text-md font-semibold py-3 px-10 bg-gray-500 text-white rounded-lg drop-shadow-lg hover:bg-mainRed hover:text-white transition-all" to="/register">Cadastre-se</Link>
+                            <button type="submit" className="inline-block text-center base:text-sm sm:text-md font-semibold py-3 base:px-6 sm:px-10 bg-mainRed text-white rounded-lg drop-shadow-lg hover:bg-darkGray hover:text-white transition-all">Login</button>
+                            <Link className="inline-block text-center base:text-sm sm:text-md font-semibold py-3 base:px-6 sm:px-10 bg-gray-500 text-white rounded-lg drop-shadow-lg hover:bg-mainRed hover:text-white transition-all" to="/register">Cadastrar</Link>
                         </div>
                     </form>
-                    <Link className="block text-sm text-gray-300 font-medium text-left relative top-4 w-[80%] mx-auto transition-all hover:text-gray-50" to="/password_recovery">Esqueceu sua senha? Clique aqui para trocá-la.</Link>
+                    <Link className="block base:text-md md:text-sm text-gray-300 font-medium text-left relative top-4 base:w-[90%] md:w-[80%] mx-auto transition-all hover:text-gray-50" to="/password_recovery">Esqueceu sua senha? Clique aqui para trocá-la.</Link>
                 </div>
             </div>
         </>

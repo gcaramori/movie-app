@@ -54,15 +54,15 @@ const Register = () => {
     return (
       <>
         <SuccessModal isOpen={isOpen} successMessage='Sua senha foi trocada com sucesso!' title='Feito!' />
-        <div id="register" className="flex flex-col justify-center items-center w-full h-full font-main py-10 relative">
-            <Link to='/' className="absolute top-8 left-10 block h-20 w-20 text-white">
+        <div id="register" className="flex flex-col justify-center items-center w-full h-full font-main base:py-0 md:py-10 base:pt-14 md:pt-10 relative">
+            <Link to='/' className="absolute base:top-1 md:top-8 base:left-4 md:left-10 block base:h-[3.8rem] md:h-20 base:w-14 md:w-20 text-white">
                 <BiArrowBack size='2.5em'/>
             </Link>
-            <h1 className="block text-3xl text-gray-300 mb-4 font-semibold">Quer se tornar um cinéfilo?</h1>
-            <h4 className="block text-xl text-gray-200 mb-8 opacity-90 font-medium">Cadastre-se no FilmeReviews e começe agora mesmo!</h4>
+            <h1 className="block base:text-2xl md:text-3xl text-gray-300 mb-4 font-semibold text-center base:px-3 md:px-0">Quer se tornar um cinéfilo?</h1>
+            <h4 className="block base:text-lg md:text-xl text-gray-200 base:mb-4 md:mb-8 opacity-90 font-medium text-center base:px-3 md:px-0">Cadastre-se no FilmeReviews e começe agora mesmo!</h4>
             <div id="registerForm" className="flex flex-col justify-center items-center base:h-full md:h-[90%] base:w-full md:w-[90%] lg:w-[750px] rounded-lg bg-darkGray">
                 <form className="flex flex-col justify-start items-center gap-1 h-[90%] w-full" onSubmit={handleSubmit(onSubmit)}>
-                    <div className="block mb-8 xl:h-[4.5rem] base:w-[95%] md:w-[80%] relative">
+                    <div className="block base:mb-6 md:mb-8 base:h-[3.8rem] lg:h-[4.3rem] base:w-[95%] md:w-[80%] relative">
                         <input type="text" className="block h-10 w-full bg-gray-800 border-2 border-mainRed rounded-full text-sm font-semibold text-white px-4 transition-all" placeholder="Seu usuário" {
                             ...register("username", {
                                 required: true
@@ -72,7 +72,7 @@ const Register = () => {
                             errors.username && <span className="block mt-1 pl-3 text-sm text-white opacity-80 transition-all absolute bottom-[-13px] left-0">Digite seu usuário, por favor!</span>
                         }  
                     </div>
-                    <div className="block mb-8 xl:h-[4.5rem] base:w-[95%] md:w-[80%] relative">
+                    <div className="block base:mb-6 md:mb-8 base:h-[3.8rem] lg:h-[4.3rem] base:w-[95%] md:w-[80%] relative">
                         <input type="text" className="block h-10 w-full bg-gray-800 border-2 border-mainRed rounded-full text-sm font-semibold text-white px-4 transition-all" placeholder="Seu email" {
                             ...register("email", {
                                 required: {
@@ -89,7 +89,7 @@ const Register = () => {
                             errors.email && <span className="block mt-1 pl-3 text-sm text-white opacity-80 transition-all absolute bottom-[-13px] left-0">{errors.email.message}</span>
                         }  
                     </div>
-                    <div className="block mb-8 xl:h-[4.5rem] base:w-[95%] md:w-[80%] relative">
+                    <div className="block base:mb-6 md:mb-8 base:h-[3.8rem] lg:h-[4.3rem] base:w-[95%] md:w-[80%] relative">
                         <input type="password" className="block h-10 w-full bg-gray-800 border-2 border-mainRed rounded-full text-sm font-semibold text-white px-4 transition-all" placeholder="Sua senha" {
                             ...register("password", {
                                 required: true
@@ -99,7 +99,7 @@ const Register = () => {
                             errors.password && <span className="block mt-1 pl-3 text-sm text-white opacity-80 transition-all absolute bottom-[-13px] left-0">Digite sua senha, por favor!</span>
                         }
                     </div>
-                    <div className="block mb-8 xl:h-[4.5rem] base:w-[95%] md:w-[80%] relative">
+                    <div className="block base:mb-6 md:mb-8 base:h-[3.8rem] lg:h-[4.3rem] base:w-[95%] md:w-[80%] relative">
                         <input type="text" className="block h-10 w-full bg-gray-800 border-2 border-mainRed rounded-full text-sm font-semibold text-white px-4 transition-all" placeholder="Seu nome" {
                             ...register("name", {
                                 required: true
@@ -109,7 +109,7 @@ const Register = () => {
                             errors.name && <span className="block mt-1 pl-3 text-sm text-white opacity-80 transition-all absolute bottom-[-13px] left-0">Digite seu nome, por favor!</span>
                         }  
                     </div>
-                    <div className="block mb-8 xl:h-[4.5rem] base:w-[95%] md:w-[80%] relative">
+                    <div className="block base:mb-6 md:mb-8 base:h-[3.8rem] lg:h-[4.3rem] base:w-[95%] md:w-[80%] relative">
                         <Controller
                             name="phone"
                             control={control}
@@ -147,7 +147,7 @@ const Register = () => {
                             errors.phone && <span className="block mt-1 pl-3 text-sm text-white opacity-80 transition-all absolute bottom-[-13px] left-0">{errors.phone.message}</span>
                         }
                     </div>
-                    <div className="block mb-8 xl:h-[4.5rem] base:w-[95%] md:w-[80%] relative">
+                    <div className="block base:mb-6 md:mb-8 base:h-[3.8rem] lg:h-[4.3rem] base:w-[95%] md:w-[80%] relative">
                         <Controller
                             name="birth"
                             control={control}

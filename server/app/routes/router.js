@@ -19,7 +19,7 @@ route.get('/', (req, res) => {
 //users
 route.post('/users', userController.create);
 route.post('/users/find', userController.find);
-route.put('/users', auth, userController.update);
+route.put('/users', userController.update);
 route.delete('/users', userController.delete);
 route.post('/signin', userController.signin);
 route.get('/logout', userController.logout);

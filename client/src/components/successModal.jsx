@@ -60,7 +60,7 @@ const SuccessModal = ({ isOpen, successMessage, title }) => {
                     to="/"
                     className="mt-3 inline-flex w-full justify-center rounded-md border border-red-500 bg-mainRed px-4 py-2 text-base font-semibold text-gray-200 shadow-sm hover:opacity-80 focus:outline-none base:text-sm transition-all"
                   >
-                    Fazer login
+                    Signin
                   </Link>
                 </div>
               </Dialog.Panel>

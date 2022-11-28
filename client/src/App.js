@@ -1,19 +1,21 @@
 import React, { useContext } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { UserContext } from './contexts/userContext';
+import { RouteContext } from './contexts/routeContext';
+import '@fontsource/quicksand';
 import Login from './routes/Login';
 import Register from './routes/Register';
 import Navbar from './routes/Navbar';
 import Sidebar from './routes/Sidebar';
 import Movies from './routes/Movies';
 import Series from './routes/Series';
-import TvShows from './routes/TvShows';
+import MyList from './routes/MyList';
 import MovieDetails from './routes/MovieDetails';
-import '@fontsource/quicksand';
 import PasswordRecovery from './routes/PasswordRecovery';
 
 function App() {
   const { currentUser } = useContext(UserContext);
+  const { currentRoute } = useContext(RouteContext);
 
   if(!currentUser) {
     return (
@@ -29,14 +31,18 @@ function App() {
 
   return (
     <div id="application">
-      <Navbar />
+      {
+        (currentRoute === '/' || currentRoute === '/series') ?
+          <Navbar />
+        : ''
+      }
       <Sidebar />
       <div className="block ml-[15rem]">
         <Routes>
           <Route index element={<Movies />} />
           <Route path="/series" element={<Series />} />
-          <Route path="/tv_shows" element={<TvShows />} />
-          <Route path="/movie" element={<MovieDetails />} />
+          <Route path="/my_list" element={<MyList />} />
+          <Route path="/movie/details" element={<MovieDetails />} />
         </Routes>
       </div>
     </div>

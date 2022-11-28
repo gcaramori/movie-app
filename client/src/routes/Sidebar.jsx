@@ -28,11 +28,13 @@ const Sidebar = () => {
             if(parsedData)  {
                 setCurrentUser(false);
                 setCurrentRoute(false);
+                
                 deleteCookie('jwtToken');
                 deleteCookie('user');
                 deleteCookie('route');
             }
         })
+        .catch(err => console.log(err));
     }
     return(
         <motion.div
@@ -50,13 +52,13 @@ const Sidebar = () => {
                                 Home
                             </Link>
                         </li>
-                        <li className="flex justify-start items-center mb-6 text-mainRed relative"> 
+                        <li isactive={currentRoute === '/my_list' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full"> 
                             <AiOutlineUnorderedList size="1.5em" className="inline-block mr-4" />
                             <Link className="sidebar-link mr-4  transition-all font-semibold" to='/my_list'>
                                 My List
                             </Link>
                         </li>
-                        <li className="flex justify-start items-center mb-6 text-mainRed relative">
+                        <li isactive={currentRoute === '/my_reviews' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
                             <MdRateReview size="1.5em" className="inline-block mr-4" />
                             <Link className="sidebar-link mr-4  transition-all font-semibold" to='/my_reviews'>
                                 My reviews
@@ -67,19 +69,19 @@ const Sidebar = () => {
                 <div className="sidebarSection">
                     <span className="block text-xs text-gray-400 ml-6 font-medium mb-4">BIBLIOTECA</span>
                     <ul className="sidebarMenu flex flex-col justify-center items-start ml-6">
-                        <li className="flex justify-start items-center mb-6 text-mainRed relative w-full">
+                        <li isactive={currentRoute === '/last_seen' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
                             <AiFillEye size="1.5em" className="inline-block mr-4" />
                             <Link className="sidebar-link mr-4 active  transition-all font-semibold" to='/last_seen'>
                                 Last seen
                             </Link>
                         </li>
-                        <li className="flex justify-start items-center mb-6 text-mainRed relative"> 
+                        <li isactive={currentRoute === '/top_rated' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative"> 
                             <AiFillStar size="1.5em" className="inline-block mr-4" />
                             <Link className="sidebar-link mr-4  transition-all font-semibold" to='/top_rated'>
                                 Top Rated
                             </Link>
                         </li>
-                        <li className="flex justify-start items-center mb-6 text-mainRed relative">
+                        <li isactive={currentRoute === '/new' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative">
                             <AiFillCompass size="1.5em" className="inline-block mr-4" />
                             <Link className="sidebar-link mr-4  transition-all font-semibold" to='/new'>
                                 Discover
@@ -89,7 +91,7 @@ const Sidebar = () => {
                 </div>
                 <div className="block mt-6">
                     <ul className="sidebarMenu flex flex-col justify-center items-start ml-6">
-                        <li className="flex justify-start items-center mb-6 text-mainRed relative w-full">
+                        <li isactive={currentRoute === '/configs' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
                             <FaCog size="1.5em" className="inline-block mr-4" />
                             <Link className="sidebar-link mr-4 active  transition-all font-semibold" to='/configs'>
                                 Configuration

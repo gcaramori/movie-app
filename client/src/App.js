@@ -42,7 +42,7 @@ function App() {
           <Route index element={<Movies />} />
           <Route path="/series" element={<Series />} />
           <Route path="/my_list" element={<MyList />} />
-          <Route path="/movie/details" element={<MovieDetails />} />
+          <Route path="/movie/details/:id" element={<MovieDetails />} />
         </Routes>
       </div>
     </div>

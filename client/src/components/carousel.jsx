@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import PlaceholderImage from "../assets/img_placeholder.jpg";
 
 const CarouselElement = ({ title, movies }) =>  {
     const carouselRef = useRef(null);
@@ -58,7 +57,6 @@ const CarouselElement = ({ title, movies }) =>  {
                                                 src={'https://image.tmdb.org/t/p/w500/' + movie.poster_path}
                                                 height={350}
                                                 alt="movie_poster"
-                                                PlaceholderSrc={PlaceholderImage}
                                             />
                                         </Link>
                                     </li>

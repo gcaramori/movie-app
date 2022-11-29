@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from 'framer-motion';
 import { AiFillHome, AiOutlineUnorderedList, AiFillStar, AiFillEye, AiFillCompass } from 'react-icons/ai';
+import { BiCategory } from 'react-icons/bi';
 import { MdRateReview } from 'react-icons/md';
 import { FaCog } from 'react-icons/fa';
 import { IoIosExit } from 'react-icons/io';
@@ -52,22 +53,22 @@ const Sidebar = () => {
                                 Home
                             </Link>
                         </li>
-                        <li isactive={currentRoute === '/my_list' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full"> 
-                            <AiOutlineUnorderedList size="1.5em" className="inline-block mr-4" />
-                            <Link className="sidebar-link mr-4  transition-all font-semibold" to='/my_list'>
-                                My List
+                        <li isactive={currentRoute === '/new' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative">
+                            <AiFillCompass size="1.5em" className="inline-block mr-4" />
+                            <Link className="sidebar-link mr-4  transition-all font-semibold" to='/new'>
+                                Discover
                             </Link>
                         </li>
-                        <li isactive={currentRoute === '/my_reviews' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
-                            <MdRateReview size="1.5em" className="inline-block mr-4" />
-                            <Link className="sidebar-link mr-4  transition-all font-semibold" to='/my_reviews'>
-                                My reviews
+                        <li isactive={currentRoute === '/categories' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative">
+                            <BiCategory size="1.5em" className="inline-block mr-4" />
+                            <Link className="sidebar-link mr-4  transition-all font-semibold" to='/categories'>
+                                Categories
                             </Link>
                         </li>
                     </ul>
                 </div>
                 <div className="sidebarSection">
-                    <span className="block text-xs text-gray-400 ml-6 font-medium mb-4">BIBLIOTECA</span>
+                    <span className="block text-xs text-gray-400 ml-6 font-medium mb-4">LIBRARY</span>
                     <ul className="sidebarMenu flex flex-col justify-center items-start ml-6">
                         <li isactive={currentRoute === '/last_seen' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
                             <AiFillEye size="1.5em" className="inline-block mr-4" />
@@ -81,10 +82,16 @@ const Sidebar = () => {
                                 Top Rated
                             </Link>
                         </li>
-                        <li isactive={currentRoute === '/new' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative">
-                            <AiFillCompass size="1.5em" className="inline-block mr-4" />
-                            <Link className="sidebar-link mr-4  transition-all font-semibold" to='/new'>
-                                Discover
+                        <li isactive={currentRoute === '/my_list' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full"> 
+                            <AiOutlineUnorderedList size="1.5em" className="inline-block mr-4" />
+                            <Link className="sidebar-link mr-4  transition-all font-semibold" to='/my_list'>
+                                My List
+                            </Link>
+                        </li>
+                        <li isactive={currentRoute === '/my_reviews' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
+                            <MdRateReview size="1.5em" className="inline-block mr-4" />
+                            <Link className="sidebar-link mr-4  transition-all font-semibold" to='/my_reviews'>
+                                My reviews
                             </Link>
                         </li>
                     </ul>

@@ -3,10 +3,12 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { AiFillStar } from 'react-icons/ai';
+import { BiArrowBack } from 'react-icons/bi';
 
 const MovieDetails = () => {
   const [movieDetails, setMovieDetails] = useState();
   const [movieCast, setMovieCast] = useState();
+  const [movieReviews, setMovieReviews] = useState();
   const [myRating, setMyRating] = useState();
   const location = useLocation();
   const movieId = location.pathname.split('/').pop();
@@ -15,6 +17,7 @@ const MovieDetails = () => {
     Promise.all([
       fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
       fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
+      fetch(`https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
       fetch('http://localhost:8080/reviews/find', {
         method: 'POST',
         headers: {
@@ -28,18 +31,23 @@ const MovieDetails = () => {
         })
       }).then(res => res.json())
     ])
-    .then(([movieDetails, cast, myRating]) => {
+    .then(([movieDetails, cast, reviews, myRating]) => {
       setMovieDetails(movieDetails);
       setMovieCast(cast);
+      setMovieReviews(reviews.results);
       setMyRating(myRating);
     })
     .catch(err => {
       console.log(err);
     })
   }, [location, movieId]);
-
+  
   return (
-    <div id="movieDetails" className='w-full h-full font-main p-2 relative'> 
+    <div id="movieDetails" className='w-full h-full font-main p-12 relative'>
+      <Link to='/' className="absolute base:top-1 md:top-4 base:left-3 md:left-6 block h-12 w-12 z-30 text-white">
+        <BiArrowBack size='2.5em'/>
+      </Link>
+      
       <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 px-10 relative w-full h-full overflow-x-hidden">
         <motion.div
           initial={{ opacity: 0 }}
@@ -94,8 +102,9 @@ const MovieDetails = () => {
               </div>
             </div>
           </div>
+
           <div id="movieMainInfo" className="flex justify-start items-start base:gap-10 lg:gap-20">
-            <div className="flex justify-start items-center flex-col">
+            <div className="flex justify-start items-center flex-col w-[380px]">
               <div id="moviePoster" className="block relative h-[500px] w-[350px] transition-all mb-4">
                 <LazyLoadImage
                   className="object-cover h-full w-full relative transition-all"
@@ -104,18 +113,49 @@ const MovieDetails = () => {
                   alt="movie_poster"
                 />
               </div>
-              <div id="movieGenres" className="flex justify-center items-center gap-4">
+              <div id="movieGenres" className="flex justify-center items-center gap-4 mb-12">
                 {
                   movieDetails?.genres?.map((genre, key) => {
                     return <Link to={"/genre/" + genre.id} key={key} className="text-xs text-white py-1 px-2 border border-white rounded-full hover:bg-white hover:text-darkGray transition-all font-bold">{genre.name}</Link>
                   })
                 }
               </div>
+              <div id="movieReviews" className="flex flex-col justify-start items-start gap-8 w-full">
+                <h3 className="text-xl text-white drop-shadow-md font-semibold">
+                  Reviews
+                </h3>
+                {
+                  movieReviews?.length > 0 ? 
+                    movieReviews?.map((review, key) => {
+                      return (
+                        <a key={key} rel="noreferrer" target="_blank" href={review.url} className="block relative">
+                          <div className="authorProfile relative flex justify-start items-start gap-4 w-full">
+                            <div className="block mr-3">
+                              <div className="authorPic h-16 w-16 overflow-hidden relative block text-left mb-2">
+                                <img src={"https://secure.gravatar.com/avatar/" + review.author_details.avatar_path} alt="authorPic" className="h-full w-full object-contain" />
+                              </div>
+                              <span className="text-xs text-white font-bold block drop-shadow-md">{review.author_details.name || "User"}</span>
+                            </div>
+                            <div className="text-gray-300 text-sm font-medium drop-shadow-md block text-left line-clamp-5">
+                              {review.content}
+                            </div>
+                          </div>
+                        </a>
+                      )
+                    }) :
+                  <span className="text-md font-medium text-gray-300 drop-shadow-md">
+                    There's no reviews of this movie...
+                  </span>
+                }
+              </div>
             </div>
-            <div className="flex justify-start items-start flex-col max-w-[60%]">
-              <span id="movieTagline" className="text-2xl text-gray-300 opacity-70 font-bold drop-shadow-md mb-10">
-                "{movieDetails?.tagline}"
-              </span>
+              
+            <div className="flex justify-start items-start flex-col lg:max-w-[85%] 2xl:max-w-[60%]">
+              {
+                movieDetails?.tagline ? <span id="movieTagline" className="text-2xl text-gray-300 opacity-70 font-bold drop-shadow-md mb-10">
+                  "{movieDetails.tagline}"
+                </span> : ''
+              }
               <div id="movieOverview" className="block mb-10">
                 <h3 className="text-xl text-white drop-shadow-md font-semibold mb-3">
                   Overview
@@ -125,15 +165,15 @@ const MovieDetails = () => {
                 </span>
               </div>
               <div id="movieCast">
-                <h3 className="text-xl text-white drop-shadow-md font-semibold mb-3">
+                <h3 className="text-xl text-white drop-shadow-md font-semibold mb-8">
                   Cast
                 </h3>
                 <div id="cast" className="flex justify-start items-center flex-wrap w-full gap-6">
                   {
                     movieCast?.cast?.map((actor, key) => {
                       return (
-                        key < 20 ?
-                        <div key={key} className="actor w-[22%] h-[300px] flex flex-col justify-center items-start">
+                        key <= 20 ?
+                        <div key={key} className="actor w-[22%] h-[330px] flex flex-col justify-center items-start">
                           <LazyLoadImage
                             className="object-cover h-full w-full relative transition-all"
                             src={'https://image.tmdb.org/t/p/w400/' + actor.profile_path}

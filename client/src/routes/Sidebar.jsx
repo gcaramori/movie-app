@@ -43,8 +43,9 @@ const Sidebar = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
         >
-            <div id="sidebar" className="fixed top-0 left-0 h-full w-[15rem] py-20 font-main bg-darkGray">
+            <div id="sidebar" className="fixed top-0 left-0 h-full w-[15rem] py-10 font-main bg-darkGray">
                 <div className="sidebarSection">
+                    <h1 className="base:text-xl text-2xl text-left text-gray-400 drop-shadow-md ml-6 mb-10">FilmeReviews</h1>
                     <span className="block text-xs text-gray-400 ml-6 font-medium mb-4">MENU</span>
                     <ul className="sidebarMenu flex flex-col justify-center items-start ml-6">
                         <li isactive={currentRoute === '/' || currentRoute === '/series' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">

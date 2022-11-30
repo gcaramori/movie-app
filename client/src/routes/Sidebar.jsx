@@ -1,20 +1,25 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from 'framer-motion';
-import { AiFillHome, AiOutlineUnorderedList, AiFillStar, AiFillEye, AiFillCompass } from 'react-icons/ai';
+import { AiFillHome, AiOutlineUnorderedList, AiFillStar, AiFillEye, AiFillCompass, AiOutlineClose } from 'react-icons/ai';
 import { BiCategory } from 'react-icons/bi';
 import { MdRateReview } from 'react-icons/md';
+import { FaBars } from 'react-icons/fa';
 import { FaCog } from 'react-icons/fa';
 import { IoIosExit } from 'react-icons/io';
 import { UserContext } from "../contexts/userContext";
 import { RouteContext } from "../contexts/routeContext";
 import { deleteCookie, setCookie } from "../utils/helper";
-import { useEffect } from "react";
 
-const Sidebar = () => {
+const Sidebar = ({ isMobile }) => {
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const { setCurrentUser } = useContext(UserContext);
     const { currentRoute, setCurrentRoute } = useContext(RouteContext);
     const location = useLocation();
+
+    const toggleSidebar = () => {
+        setIsSidebarOpen(!isSidebarOpen);
+    }
 
     useEffect(() => {
         setCookie('route', location.pathname);
@@ -38,83 +43,96 @@ const Sidebar = () => {
         .catch(err => console.log(err));
     }
     return(
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-        >
-            <div id="sidebar" className="fixed top-0 left-0 h-full w-[15rem] py-10 font-main bg-darkGray">
-                <div className="sidebarSection">
-                    <h1 className="base:text-xl text-2xl text-left text-gray-400 drop-shadow-md ml-6 mb-10">FilmeReviews</h1>
-                    <span className="block text-xs text-gray-400 ml-6 font-medium mb-4">MENU</span>
-                    <ul className="sidebarMenu flex flex-col justify-center items-start ml-6">
-                        <li isactive={currentRoute === '/' || currentRoute === '/series' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
-                            <AiFillHome size="1.5em" className="inline-block mr-4" />
-                            <Link className="sidebar-link mr-4 active  transition-all font-semibold" to='/'>
-                                Home
-                            </Link>
-                        </li>
-                        <li isactive={currentRoute === '/new' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative">
-                            <AiFillCompass size="1.5em" className="inline-block mr-4" />
-                            <Link className="sidebar-link mr-4  transition-all font-semibold" to='/new'>
-                                Discover
-                            </Link>
-                        </li>
-                        <li isactive={currentRoute === '/categories' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative">
-                            <BiCategory size="1.5em" className="inline-block mr-4" />
-                            <Link className="sidebar-link mr-4  transition-all font-semibold" to='/categories'>
-                                Categories
-                            </Link>
-                        </li>
-                    </ul>
+        <>
+            {
+                isMobile ?
+                <div id="toggleSidebar" className="fixed top-4 base:left-3 sm:left-6 h-8 w-8 text-white z-50 transition-all" onClick={toggleSidebar}>
+                    {
+                        !isSidebarOpen ? 
+                        <FaBars size="1.3em" /> :
+                        <AiOutlineClose size="1.3em" />
+                    }
+                </div> :
+                ''
+            }
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
+                <div id="sidebar" className={`fixed top-0 left-0 h-full w-[15rem] base:py-14 md:py-10 font-main bg-darkGray transition-all z-40 ${isMobile && !isSidebarOpen ? "translate-x-[-100%]" : ""}`}>
+                    <div className="sidebarSection">
+                        <h1 className="base:text-xl text-2xl text-left text-gray-400 drop-shadow-md ml-6 mb-10">FilmeReviews</h1>
+                        <span className="block text-xs text-gray-400 ml-6 font-medium mb-4">MENU</span>
+                        <ul className="sidebarMenu flex flex-col justify-center items-start ml-6">
+                            <li isactive={currentRoute === '/' || currentRoute === '/series' || currentRoute.indexOf('/movie/') > -1 || currentRoute.indexOf('/series/') > -1 ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
+                                <AiFillHome size="1.5em" className="inline-block mr-4" />
+                                <Link className="sidebar-link mr-4 active  transition-all font-semibold" to='/'>
+                                    Home
+                                </Link>
+                            </li>
+                            <li isactive={currentRoute === '/new' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative">
+                                <AiFillCompass size="1.5em" className="inline-block mr-4" />
+                                <Link className="sidebar-link mr-4  transition-all font-semibold" to='/new'>
+                                    Discover
+                                </Link>
+                            </li>
+                            <li isactive={currentRoute === '/categories' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative">
+                                <BiCategory size="1.5em" className="inline-block mr-4" />
+                                <Link className="sidebar-link mr-4  transition-all font-semibold" to='/categories'>
+                                    Categories
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="sidebarSection">
+                        <span className="block text-xs text-gray-400 ml-6 font-medium mb-4">LIBRARY</span>
+                        <ul className="sidebarMenu flex flex-col justify-center items-start ml-6">
+                            <li isactive={currentRoute === '/last_seen' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
+                                <AiFillEye size="1.5em" className="inline-block mr-4" />
+                                <Link className="sidebar-link mr-4 active  transition-all font-semibold" to='/last_seen'>
+                                    Last seen
+                                </Link>
+                            </li>
+                            <li isactive={currentRoute === '/top_rated' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative"> 
+                                <AiFillStar size="1.5em" className="inline-block mr-4" />
+                                <Link className="sidebar-link mr-4  transition-all font-semibold" to='/top_rated'>
+                                    Top Rated
+                                </Link>
+                            </li>
+                            <li isactive={currentRoute === '/my_list' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full"> 
+                                <AiOutlineUnorderedList size="1.5em" className="inline-block mr-4" />
+                                <Link className="sidebar-link mr-4  transition-all font-semibold" to='/my_list'>
+                                    My List
+                                </Link>
+                            </li>
+                            <li isactive={currentRoute === '/my_reviews' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
+                                <MdRateReview size="1.5em" className="inline-block mr-4" />
+                                <Link className="sidebar-link mr-4  transition-all font-semibold" to='/my_reviews'>
+                                    My reviews
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="block mt-6">
+                        <ul className="sidebarMenu flex flex-col justify-center items-start ml-6">
+                            <li isactive={currentRoute === '/configs' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
+                                <FaCog size="1.5em" className="inline-block mr-4" />
+                                <Link className="sidebar-link mr-4 active  transition-all font-semibold" to='/configs'>
+                                    Configuration
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+                    <div className="block absolute base:bottom-12 md:bottom-8 left-[1.5rem]">
+                        <IoIosExit size="1.5em" className="inline-block mr-4 text-mainRed" />
+                        <Link className="sidebar-link mr-4  transition-all font-semibold" onClick={handleExit}>
+                            Logout
+                        </Link>
+                    </div>
                 </div>
-                <div className="sidebarSection">
-                    <span className="block text-xs text-gray-400 ml-6 font-medium mb-4">LIBRARY</span>
-                    <ul className="sidebarMenu flex flex-col justify-center items-start ml-6">
-                        <li isactive={currentRoute === '/last_seen' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
-                            <AiFillEye size="1.5em" className="inline-block mr-4" />
-                            <Link className="sidebar-link mr-4 active  transition-all font-semibold" to='/last_seen'>
-                                Last seen
-                            </Link>
-                        </li>
-                        <li isactive={currentRoute === '/top_rated' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative"> 
-                            <AiFillStar size="1.5em" className="inline-block mr-4" />
-                            <Link className="sidebar-link mr-4  transition-all font-semibold" to='/top_rated'>
-                                Top Rated
-                            </Link>
-                        </li>
-                        <li isactive={currentRoute === '/my_list' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full"> 
-                            <AiOutlineUnorderedList size="1.5em" className="inline-block mr-4" />
-                            <Link className="sidebar-link mr-4  transition-all font-semibold" to='/my_list'>
-                                My List
-                            </Link>
-                        </li>
-                        <li isactive={currentRoute === '/my_reviews' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
-                            <MdRateReview size="1.5em" className="inline-block mr-4" />
-                            <Link className="sidebar-link mr-4  transition-all font-semibold" to='/my_reviews'>
-                                My reviews
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
-                <div className="block mt-6">
-                    <ul className="sidebarMenu flex flex-col justify-center items-start ml-6">
-                        <li isactive={currentRoute === '/configs' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
-                            <FaCog size="1.5em" className="inline-block mr-4" />
-                            <Link className="sidebar-link mr-4 active  transition-all font-semibold" to='/configs'>
-                                Configuration
-                            </Link>
-                        </li>
-                    </ul>
-                </div>
-                <div className="block absolute bottom-8 left-[1.5rem]">  
-                    <IoIosExit size="1.5em" className="inline-block mr-4 text-mainRed" />
-                    <Link className="sidebar-link mr-4  transition-all font-semibold" onClick={handleExit}>
-                        Logout
-                    </Link>
-                </div>
-            </div>
-        </motion.div>
+            </motion.div>
+        </>
     )
 }
 

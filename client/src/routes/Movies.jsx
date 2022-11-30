@@ -35,8 +35,8 @@ const Movies = () => {
     }, []);
 
     return (
-      <div id="home" className='w-full h-full font-main p-2 relative'> 
-          <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 px-10 relative w-full h-full overflow-x-hidden">
+      <div id="movies" className='w-full h-full font-main p-2 relative'> 
+          <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 base:px-4 md:px-10 relative w-full h-full overflow-x-hidden">
             <CarouselElement title="Popular" movies={popularMovies} />
             <CarouselElement title="Trending" movies={trendingMovies} />
             <CarouselElement title="Top Rated" movies={topRatedMovies} />

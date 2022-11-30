@@ -7,26 +7,44 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 const CarouselElement = ({ title, movies }) =>  {
     const carouselRef = useRef(null);
     const [carouselValue, setCarouselValue] = useState(1);
+    const [activeSlide, setActiveSlide] = useState(0);
     
     useEffect(() => {
         carouselRef.current.style.transform = `translateX(${carouselValue}px)`;
-    }, [carouselValue]);
+
+        if(document.querySelector("#carousel li") !== null) document.querySelector(`#carousel li[data-number="${activeSlide}"]`).classList.add('active');
+    }, [carouselValue, activeSlide]);
 
     const handlePrev = () => {
-        if(carouselValue < 0) setCarouselValue(carouselValue + 250);
+        if(activeSlide > 0) document.querySelector('#carousel li.active').classList.remove('active');
+
+        const previousSlide = (activeSlide > 0) ? activeSlide - 1 : 0;
+        setActiveSlide(previousSlide);
+
+        if(window.innerWidth > 768) {
+            if(carouselValue < 0) setCarouselValue(carouselValue + 250);
+        }
+        else {
+            if(carouselValue < 0) setCarouselValue(carouselValue + 220);
+        }
     }
 
     const handleNext = () => {
+        if(activeSlide < 19) document.querySelector('#carousel li.active').classList.remove('active');
+
+        const nextSlide = (activeSlide < 19) ? activeSlide + 1 : 19;
+        setActiveSlide(nextSlide);
+
         const carouselMaxWidth = 210 * 20;
 
         if(window.innerWidth > 768) {
             if(Math.abs(carouselValue) <= carouselMaxWidth - (window.innerWidth / 1.3)) setCarouselValue(carouselValue - 250);
         }
         else {
-            if(Math.abs(carouselValue) <= carouselMaxWidth - (window.innerWidth / 1.8)) setCarouselValue(carouselValue - 250);
+            if(Math.abs(carouselValue) < carouselMaxWidth - (window.innerWidth / 1.3)) setCarouselValue(carouselValue - 220);
         }
     }
-
+    console.log(carouselValue);
     return (
         <>
             <motion.div
@@ -50,7 +68,7 @@ const CarouselElement = ({ title, movies }) =>  {
                         {
                             (movies && movies.length > 0) ? movies.map((movie, key) => {
                                 return (
-                                    <li key={key} className={key === 1 ? "carouselItem active" : "carouselItem"}>
+                                    <li key={key} className={key === 0 ? "carouselItem active transition-all" : "carouselItem transition-all"} data-number={key}>
                                         <Link to={"/movie/details/" + movie.id} className="block relative h-[350px] w-[200px] transition-all hover:scale-105">
                                             <LazyLoadImage
                                                 className="object-contain h-full w-full relative transition-all"

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { UserContext } from './contexts/userContext';
 import { RouteContext } from './contexts/routeContext';
@@ -14,8 +14,22 @@ import MovieDetails from './routes/MovieDetails';
 import PasswordRecovery from './routes/PasswordRecovery';
 
 function App() {
+  const [isMobile, setIsMobile] = useState(false);
   const { currentUser } = useContext(UserContext);
   const { currentRoute } = useContext(RouteContext);
+  
+  const handleResize = () => {
+    if (window.innerWidth <= 650) {
+        setIsMobile(true);
+    } else {
+        setIsMobile(false);
+    }
+  }
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+  }, []);
 
   if(!currentUser) {
     return (
@@ -36,8 +50,8 @@ function App() {
           <Navbar />
         : ''
       }
-      <Sidebar />
-      <div className="block ml-[15rem]">
+      <Sidebar isMobile={isMobile} />
+      <div className="base:ml-0 md:ml-[15rem]">
         <Routes>
           <Route index element={<Movies />} />
           <Route path="/series" element={<Series />} />

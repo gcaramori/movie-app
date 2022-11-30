@@ -2,9 +2,12 @@
   "name": "movie-app-api",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "18.x"
+  },
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
   "author": "Guilherme Caramori",
   "license": "ISC",

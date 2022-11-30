@@ -1,6 +1,7 @@
 //requires
 const express = require('express');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -27,6 +28,13 @@ app.use(session({
     secret: "xgj2jwwjjas#!dksd11",
     saveUninitialized: false,
     resave: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      dbName: 'movie_app',
+      touchAfter: 24 * 3600,
+      autoRemove: 'native',
+      autoRemoveInterval: 10
+    }),
     cookie : {
       maxAge: 1000 * 60 * 60 * 24
     }

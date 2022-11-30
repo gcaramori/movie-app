@@ -11,6 +11,9 @@ const path = require('path');
 
 const app = express();
 
+//memory leak
+app.set('trust proxy', 1);
+
 dotenv.config({ path: 'config.env' });
 const PORT = process.env.PORT || 8080;
 
@@ -28,6 +31,7 @@ app.use(session({
       maxAge: 1000 * 60 * 60 * 24
     }
 }));
+
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(cookieParser());
@@ -43,8 +47,6 @@ app.use(
     }
   })
 );
-
-app.use('/', require('./app/routes/router'));
 
 app.listen(PORT, () => {
   console.log(`Server is on ${PORT}!`); 

@@ -46,9 +46,9 @@ const Sidebar = ({ isMobile }) => {
         <>
             {
                 isMobile ?
-                <div id="toggleSidebar" className="fixed top-4 base:left-3 sm:left-6 h-8 w-8 text-white z-50 transition-all" onClick={toggleSidebar}>
+                <div id="toggleSidebar" className="fixed top-4 base:left-3 sm:left-6 h-8 w-8 text-white z-50 transition-all bg-darkGray rounded-full flex justify-center items-center" onClick={toggleSidebar}>
                     {
-                        !isSidebarOpen ? 
+                        !isSidebarOpen ?
                         <FaBars size="1.3em" /> :
                         <AiOutlineClose size="1.3em" />
                     }
@@ -65,7 +65,7 @@ const Sidebar = ({ isMobile }) => {
                         <h1 className="base:text-xl text-2xl text-left text-gray-400 drop-shadow-md ml-6 mb-10">FilmeReviews</h1>
                         <span className="block text-xs text-gray-400 ml-6 font-medium mb-4">MENU</span>
                         <ul className="sidebarMenu flex flex-col justify-center items-start ml-6">
-                            <li isactive={currentRoute === '/' || currentRoute === '/series' || currentRoute.indexOf('/movie/') > -1 || currentRoute.indexOf('/series/') > -1 ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
+                            <li isactive={currentRoute && (currentRoute === '/' || currentRoute === '/series' || currentRoute.indexOf('/movie/') > -1 || currentRoute.indexOf('/series/') > -1) ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
                                 <AiFillHome size="1.5em" className="inline-block mr-4" />
                                 <Link className="sidebar-link mr-4 active  transition-all font-semibold" to='/'>
                                     Home

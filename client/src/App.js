@@ -34,7 +34,7 @@ function App() {
   if(!currentUser) {
     return (
       <div id="application">
-        <Routes>
+        <Routes basename="/">
           <Route index element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/password_recovery" element={<PasswordRecovery />} />
@@ -52,7 +52,7 @@ function App() {
       }
       <Sidebar isMobile={isMobile} />
       <div className="base:ml-0 md:ml-[15rem]">
-        <Routes>
+        <Routes basename="/">
           <Route index element={<Movies />} />
           <Route path="/series" element={<Series />} />
           <Route path="/my_list" element={<MyList />} />

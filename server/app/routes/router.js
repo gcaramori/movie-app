@@ -5,13 +5,6 @@ const watchListController = require('../controllers/watchListController');
 const reviewController = require('../controllers/reviewController');
 const auth = require("../middleware/auth");
 
-route.get('/*', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
-    
-    res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'));
-});
-
 //API
 
 //users

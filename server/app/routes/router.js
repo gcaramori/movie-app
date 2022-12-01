@@ -5,7 +5,7 @@ const watchListController = require('../controllers/watchListController');
 const reviewController = require('../controllers/reviewController');
 const auth = require("../middleware/auth");
 
-if(process.env.NODE_ENV === 'production') {
+if(process.env.NODE_ENV == 'production') {
     route.get('/*', (req, res) => {
         res.status(200).send('BÕI?');
         // res.sendFile('./client/build/index.html');

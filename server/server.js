@@ -57,7 +57,7 @@ app.use(
   })
 );
 
-app.use(express.static(path.join(__dirname, '../client', 'build')));
+app.use(express.static(path.join(__dirname, '../client', '/build')));
 
 app.listen(PORT, () => {
   console.log(`Server is on ${PORT}!`); 

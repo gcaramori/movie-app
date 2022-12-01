@@ -60,7 +60,7 @@ app.listen(PORT, () => {
   console.log(`Server is on ${PORT}!`); 
 });
 
-app.use('/api', require(path.join(__dirname, 'app', 'routes', 'router.js')));
+app.use('/api', require(path.join(__dirname, 'app', 'routes', 'router.js'))); 
 
 // static files (build of your frontend)
 if(process.env.NODE_ENV === 'production') {

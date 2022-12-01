@@ -5,15 +5,6 @@ const watchListController = require('../controllers/watchListController');
 const reviewController = require('../controllers/reviewController');
 const auth = require("../middleware/auth");
 
-
-/**
- * @description Root route
- * @method GET/
- */
-route.get('/', (req, res) => {
-    res.send('Hello world');
-});
-
 //API
 
 //users

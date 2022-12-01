@@ -45,26 +45,26 @@ function App() {
     )
   }
 
-  // return (
-  //   <div id="application">
-  //     {
-  //       (currentRoute === '/' || currentRoute === '/series') ?
-  //         <Navbar />
-  //       : ''
-  //     }
-  //     <Sidebar isMobile={isMobile} />
-  //     <div className="base:ml-0 md:ml-[15rem]">
-  //       <BrowserRouter basename='/'>
-  //         <Routes>
-  //           <Route index element={<Movies />} />
-  //           <Route path="/series" element={<Series />} />
-  //           <Route path="/my_list" element={<MyList />} />
-  //           <Route path="/movie/details/:id" element={<MovieDetails />} />
-  //         </Routes>
-  //       </BrowserRouter>
-  //     </div>
-  //   </div>
-  // );
+  return (
+    <div id="application">
+      {
+        (currentRoute === '/' || currentRoute === '/series') ?
+          <Navbar />
+        : ''
+      }
+      <Sidebar isMobile={isMobile} />
+      <div className="base:ml-0 md:ml-[15rem]">
+        <BrowserRouter basename='/'>
+          <Routes>
+            <Route index element={<Movies />} />
+            <Route path="/series" element={<Series />} />
+            <Route path="/my_list" element={<MyList />} />
+            <Route path="/movie/details/:id" element={<MovieDetails />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </div>
+  );
 }
 
 export default App;

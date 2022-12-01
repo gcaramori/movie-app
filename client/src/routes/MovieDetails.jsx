@@ -18,7 +18,7 @@ const MovieDetails = () => {
       fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
       fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
       fetch(`https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
-      fetch('https://filmereviews.vercel.app/api/reviews/find', {
+      fetch('http://localhost:8080/api/reviews/find', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

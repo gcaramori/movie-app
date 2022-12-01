@@ -56,17 +56,10 @@ app.use(
   })
 );
 
+app.use(express.static(path.join(__dirname, '../client', 'build')));
+
 app.listen(PORT, () => {
   console.log(`Server is on ${PORT}!`); 
 });
 
-app.use('/api', require(path.join(__dirname, 'app', 'routes', 'router.js'))); 
-
-// static files (build of your frontend)
-if(process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client', 'build')));
-
-  app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'));
-  });
-}
+app.use('/', require('./server/routes/router'));

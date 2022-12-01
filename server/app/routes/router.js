@@ -5,6 +5,12 @@ const watchListController = require('../controllers/watchListController');
 const reviewController = require('../controllers/reviewController');
 const auth = require("../middleware/auth");
 
+if(process.env.NODE_ENV === 'production') {
+    route.get('/*', (req, res) => {
+        res.sendFile('./client/build/index.html');
+    });
+}
+
 //API
 
 //users

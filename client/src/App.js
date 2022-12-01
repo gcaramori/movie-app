@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { UserContext } from './contexts/userContext';
 import { RouteContext } from './contexts/routeContext';
 import '@fontsource/quicksand';
@@ -34,11 +34,13 @@ function App() {
   if(!currentUser) {
     return (
       <div id="application">
-        <Routes>
-          <Route index element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/password_recovery" element={<PasswordRecovery />} />
-        </Routes>
+        <BrowserRouter basename='/'>
+          <Routes>
+            <Route index element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/password_recovery" element={<PasswordRecovery />} />
+          </Routes>
+        </BrowserRouter>
       </div>
     )
   }
@@ -52,12 +54,14 @@ function App() {
       }
       <Sidebar isMobile={isMobile} />
       <div className="base:ml-0 md:ml-[15rem]">
-        <Routes>
-          <Route index element={<Movies />} />
-          <Route path="/series" element={<Series />} />
-          <Route path="/my_list" element={<MyList />} />
-          <Route path="/movie/details/:id" element={<MovieDetails />} />
-        </Routes>
+        <BrowserRouter basename='/'>
+          <Routes>
+            <Route index element={<Movies />} />
+            <Route path="/series" element={<Series />} />
+            <Route path="/my_list" element={<MyList />} />
+            <Route path="/movie/details/:id" element={<MovieDetails />} />
+          </Routes>
+        </BrowserRouter>
       </div>
     </div>
   );

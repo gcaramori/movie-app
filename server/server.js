@@ -66,8 +66,8 @@ app.listen(PORT, () => {
 app.get('/', (req, res) => {
   res.setHeader('Content-Type', 'text/html');
   res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
-  res.status(200).send({ message: 'Hello word!' });
-  // res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'));
+  
+  res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'));
 });
 
 app.use('/api', require(path.join(__dirname, 'app', 'routes', 'router.js')));

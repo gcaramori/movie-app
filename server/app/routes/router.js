@@ -7,7 +7,8 @@ const auth = require("../middleware/auth");
 
 if(process.env.NODE_ENV === 'production') {
     route.get('/*', (req, res) => {
-        res.sendFile('./client/build/index.html');
+        res.status(200).send('BÕI?');
+        // res.sendFile('./client/build/index.html');
     });
 }
 

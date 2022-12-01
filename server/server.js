@@ -67,7 +67,7 @@ app.get('/*', (req, res) => {
   res.setHeader('Content-Type', 'text/html');
   res.setHeader('Cache-Control', 's-max-age=1, stale-while-revalidate');
   
-  res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'));
+  res.sendFile('index.html', path.join(__dirname, '../client', 'build'));
 });
 
 app.use('/api', require(path.join(__dirname, 'app', 'routes', 'router.js')));

@@ -28,7 +28,7 @@ const Sidebar = ({ isMobile }) => {
     }, [location, setCurrentRoute]);
 
     const handleExit = async () => {
-        await fetch('http://localhost:8080/logout')
+        await fetch('http://localhost:8080/api/logout')
         .then(data => data.json())
         .then(parsedData => {
             if(parsedData)  {

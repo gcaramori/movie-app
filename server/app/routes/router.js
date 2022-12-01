@@ -8,24 +8,24 @@ const auth = require("../middleware/auth");
 //API
 
 //users
-route.post('/users', userController.create);
-route.post('/users/find', userController.find);
-route.put('/users', userController.update);
-route.delete('/users', userController.delete);
-route.post('/signin', userController.signin);
-route.get('/logout', userController.logout);
+route.post('/api/users', userController.create);
+route.post('/api/users/find', userController.find);
+route.put('/api/users', userController.update);
+route.delete('/api/users', userController.delete);
+route.post('/api/signin', userController.signin);
+route.get('/api/logout', userController.logout);
 
 //watch_list
-route.post('/watch_list', watchListController.add);
-route.post('/watch_list/find', watchListController.find);
-route.put('/watch_list', auth, watchListController.updateStatus);
-route.delete('/watch_list', watchListController.remove);
+route.post('/api/watch_list', watchListController.add);
+route.post('/api/watch_list/find', watchListController.find);
+route.put('/api/watch_list', auth, watchListController.updateStatus);
+route.delete('/api/watch_list', watchListController.remove);
 
 
 //review
-route.post('/reviews', reviewController.add);
-route.post('/reviews/find', reviewController.find);
-route.put('/reviews', auth, reviewController.update);
-route.delete('/reviews', reviewController.remove);
+route.post('/api/reviews', reviewController.add);
+route.post('/api/reviews/find', reviewController.find);
+route.put('/api/reviews', auth, reviewController.update);
+route.delete('/api/reviews', reviewController.remove);
 
 module.exports = route;

@@ -11,7 +11,7 @@ const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     
     const onSubmit = async (data) => {
-        await fetch('http://localhost:8080/signin', {
+        await fetch('http://localhost:8080/api/signin', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

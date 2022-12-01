@@ -1,5 +1,6 @@
 {
   "name": "movie-app-api",
+  "homepage": "https://filmereviews.vercel.app",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",

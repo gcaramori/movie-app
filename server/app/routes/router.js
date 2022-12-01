@@ -4,13 +4,11 @@ const userController = require('../controllers/userController');
 const watchListController = require('../controllers/watchListController');
 const reviewController = require('../controllers/reviewController');
 const auth = require("../middleware/auth");
+const path = require('path');
 
-if(process.env.NODE_ENV == 'production') {
-    route.get('/*', (req, res) => {
-        res.status(200).send('BÕI?');
-        // res.sendFile('./client/build/index.html');
-    });
-}
+route.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client', 'build', 'index.html'));
+});
 
 //API
 

@@ -62,4 +62,4 @@ app.listen(PORT, () => {
   console.log(`Server is on ${PORT}!`); 
 });
 
-app.use('/', require('./server/routes/router'));
+app.use('/api', require(path.join(__dirname, 'app', 'routes', 'router.js')));

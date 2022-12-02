@@ -28,7 +28,7 @@ const Register = () => {
 
         // console.log(uploadedProfilePic);
 
-        await fetch('http://localhost:8080/api/users', {
+        await fetch('http://filmereviews.vercel.app/api/users', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

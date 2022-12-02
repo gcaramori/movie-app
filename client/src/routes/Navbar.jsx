@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { RouteContext } from "../contexts/routeContext";
 import { setCookie } from "../utils/helper";
 
-const Navbar = ({ isMobile }) => {
+const Navbar = () => {
     const { currentRoute, setCurrentRoute } = useContext(RouteContext);
     const location = useLocation();
 

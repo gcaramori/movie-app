@@ -8,10 +8,10 @@ module.exports = {
     extend: {},
     screens: {
       'base': '320px',
-      // => @media (min-width: 360px) { ... }
+      // => @media (min-width: 320px) { ... }
       
-      'sm': '375px',
-      // => @media (min-width: 360px) { ... }
+      'sm': '410px',
+      // => @media (min-width: 410px) { ... }
 
       'md': '768px',
       // => @media (min-width: 768px) { ... }

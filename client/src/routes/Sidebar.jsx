@@ -46,7 +46,7 @@ const Sidebar = ({ isMobile }) => {
         <>
             {
                 isMobile ?
-                <div id="toggleSidebar" className="fixed top-4 base:left-3 sm:left-6 h-8 w-8 text-white z-50 transition-all bg-darkGray rounded-full flex justify-center items-center" onClick={toggleSidebar}>
+                <div id="toggleSidebar" className="fixed top-2 base:left-3 sm:left-6 h-10 w-10 text-white z-50 transition-all bg-darkGray rounded-full flex justify-center items-center" onClick={toggleSidebar}>
                     {
                         !isSidebarOpen ?
                         <FaBars size="1.3em" /> :

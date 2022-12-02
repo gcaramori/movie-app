@@ -18,7 +18,7 @@ const MovieDetails = () => {
       fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
       fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
       fetch(`https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
-      fetch('http://localhost:8080/api/reviews/find', {
+      fetch('http://filmereviews.vercel.app/api/reviews/find', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -43,21 +43,21 @@ const MovieDetails = () => {
   }, [location, movieId]);
   
   return (
-    <div id="movieDetails" className='w-full h-full font-main p-12 relative'>
+    <div id="movieDetails" className='w-full h-full font-main md:py-8 xl:py-12 md:px-6 xl:px-12 relative'>
       <Link to='/' className="absolute base:top-1 md:top-4 base:left-3 md:left-6 block h-12 w-12 z-30 text-white">
-        <BiArrowBack size='2.5em'/>
+        <BiArrowBack id="backButton" />
       </Link>
       
-      <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 px-10 relative w-full h-full overflow-x-hidden">
+      <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 md:px-0 xl:px-10 relative w-full h-full overflow-x-hidden">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
           className="w-full h-full"
         >
-          <div className="relative flex items-center justify-between w-full h-full mb-8">
+          <div className="relative flex items-start justify-between w-full h-full mb-8">
             <div id="titleAndGeneralInfo">
-              <h1 id="movieTitle" className="text-4xl text-white font-bold mb-3 drop-shadow-md">{movieDetails?.title}</h1>
+              <h1 id="movieTitle" className="md:text-3xl xl:text-4xl text-white font-bold mb-3 drop-shadow-md">{movieDetails?.title}</h1>
               <div id="movieGeneralInfo" className="block relative">
                 <div id="moreDetails" className="flex justify-start items-center gap-4 w-full">
                   <span id="releaseYear" className="inline-block text-sm text-gray-300 font-bold opacity-80 drop-shadow-md">
@@ -103,9 +103,9 @@ const MovieDetails = () => {
             </div>
           </div>
 
-          <div id="movieMainInfo" className="flex justify-start items-start base:gap-10 lg:gap-20">
-            <div className="flex justify-start items-center flex-col w-[380px]">
-              <div id="moviePoster" className="block relative h-[500px] w-[350px] transition-all mb-4">
+          <div id="movieMainInfo" className="flex justify-start items-start md:gap-12 2xl:gap-20">
+            <div className="flex justify-start items-center flex-col md:w-[280px] lg:w-[300px] xl:w-[380px]">
+              <div id="moviePoster" className="block relative md:h-[350px] xl:h-[400px] 2xl:h-[500px] md:w-[270px] xl:w-[300px] 2xl:w-[350px] transition-all mb-4">
                 <LazyLoadImage
                   className="object-cover h-full w-full relative transition-all"
                   src={'https://image.tmdb.org/t/p/w500/' + movieDetails?.poster_path}
@@ -150,7 +150,7 @@ const MovieDetails = () => {
               </div>
             </div>
               
-            <div className="flex justify-start items-start flex-col lg:max-w-[85%] 2xl:max-w-[60%]">
+            <div className="flex justify-start items-start flex-col lg:max-w-[85%] xl:max-w-[60%]">
               {
                 movieDetails?.tagline ? <span id="movieTagline" className="text-2xl text-gray-300 opacity-70 font-bold drop-shadow-md mb-10">
                   "{movieDetails.tagline}"
@@ -168,12 +168,12 @@ const MovieDetails = () => {
                 <h3 className="text-xl text-white drop-shadow-md font-semibold mb-8">
                   Cast
                 </h3>
-                <div id="cast" className="flex justify-start items-center flex-wrap w-full gap-6">
+                <div id="cast" className="flex justify-start items-center flex-wrap w-full lg:gap-3 xl:gap-6">
                   {
                     movieCast?.cast?.map((actor, key) => {
                       return (
                         key <= 20 ?
-                        <div key={key} className="actor w-[22%] h-[330px] flex flex-col justify-center items-start">
+                        <div key={key} className="actor base:w-[95%] lg:w-[45%] xl:w-[30%] 2xl:w-[22%] h-[330px] flex flex-col justify-center items-start">
                           <LazyLoadImage
                             className="object-cover h-full w-full relative transition-all"
                             src={'https://image.tmdb.org/t/p/w400/' + actor.profile_path}

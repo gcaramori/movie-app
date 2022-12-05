@@ -19,7 +19,7 @@ function App() {
   const { currentRoute } = useContext(RouteContext);
   
   const handleResize = () => {
-    if (window.innerWidth <= 650) {
+    if (window.innerWidth <= 769) {
         setIsMobile(true);
     } else {
         setIsMobile(false);
@@ -51,12 +51,12 @@ function App() {
         : ''
       }
       <Sidebar isMobile={isMobile} />
-      <div className="base:ml-0 md:ml-[15rem]">
+      <div className="base:ml-0 lg:ml-[15rem]">
         <Routes>
           <Route index element={<Movies />} />
           <Route path="/series" element={<Series />} />
           <Route path="/my_list" element={<MyList />} />
-          <Route path="/movie/details/:id" element={<MovieDetails />} />
+          <Route path="/movie/details/:id" element={<MovieDetails isMobile={isMobile} />} />
         </Routes>
       </div>
     </div>

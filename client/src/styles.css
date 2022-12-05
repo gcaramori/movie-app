@@ -97,8 +97,4 @@ body {
     #carousel li.active {
         transform: scale(1.06);
     }
-
-    #backButton {
-        font-size: 1.5em;
-    }
 }

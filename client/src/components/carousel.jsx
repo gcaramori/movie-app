@@ -60,7 +60,7 @@ const CarouselElement = ({ title, movies }) =>  {
                 className="w-full h-full"
             >
                 <div data-id={title.replaceAll(" ", "").toLowerCase()} className="movieCarousel relative w-full mb-10">
-                    <h2 className="font-main text-2xl text-gray-100 font-semibold drop-shadow-lg base:max-w-[10rem]">{title}</h2>
+                    <h2 className="font-main text-2xl text-gray-100 font-semibold drop-shadow-lg base:max-w-[10rem] md:max-w-full">{title}</h2>
 
                     <div id="carouselControls" className="flex gap-6 w-[100px] absolute top-0 base:right-[-1em] sm:right-0">
                         <button type="button" id="prevButton" className="flex justify-center items-center text-white bg-mainRed rounded-full h-8 w-8 border-0 drop-shadow-md transition-all hover:bg-darkGray" disabled={carouselValue === 0 ? true : false} onClick={handlePrev}>

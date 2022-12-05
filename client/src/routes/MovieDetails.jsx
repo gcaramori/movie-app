@@ -7,6 +7,7 @@ import { BiArrowBack } from 'react-icons/bi';
 
 const MovieDetails = ({ isMobile }) => {
   const [isReviewOpen, setIsReviewOpen] = useState(false);
+  const [isCastOpen, setIsCastOpen] = useState(false);
   const [movieDetails, setMovieDetails] = useState();
   const [movieCast, setMovieCast] = useState();
   const [movieReviews, setMovieReviews] = useState();
@@ -46,6 +47,10 @@ const MovieDetails = ({ isMobile }) => {
   const handleOpenReviews = () => {
     setIsReviewOpen(!isReviewOpen);
   }
+
+  const handleOpenCast = () => {
+    setIsCastOpen(!isCastOpen);
+  }
   
   return (
     <div id="movieDetails" className='w-full h-full font-main md:py-8 xl:py-12 md:px-6 xl:px-12 relative'>
@@ -53,7 +58,7 @@ const MovieDetails = ({ isMobile }) => {
         <BiArrowBack id="backButton" />
       </Link>
       
-      <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 base:pt-14 md:pt-10 lg:pt-4 md:px-0 xl:px-10 relative w-full h-full overflow-x-hidden">
+      <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 base:pt-14 md:pt-10 lg:pt-4 md:px-0 xl:px-10 relative w-full h-full overflow-hidden">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -164,7 +169,7 @@ const MovieDetails = ({ isMobile }) => {
               </div>
             </div>
               
-            <div className="flex justify-start items-start flex-col lg:max-w-[85%] xl:max-w-[60%]">
+            <div className="flex justify-start items-start flex-col base:max-w-[90%] lg:max-w-[85%] xl:max-w-[60%] mx-[auto]">
               {
                 movieDetails?.tagline ? <span id="movieTagline" className="text-2xl text-gray-300 opacity-70 font-bold drop-shadow-md mb-10 text-justify">
                   "{movieDetails.tagline}"
@@ -178,18 +183,25 @@ const MovieDetails = ({ isMobile }) => {
                   {movieDetails?.overview}
                 </span>
               </div>
-              <div id="movieCast">
+              <div id="movieCast" className='block relative'>
                 <h3 className="text-xl text-white drop-shadow-md font-semibold mb-8">
                   Cast
                 </h3>
-                <div id="cast" className="flex justify-start items-center flex-wrap w-full md:gap-3 xl:gap-6">
+                {
+                  isMobile ?
+                  <div id="openCast" className="h-6 w-6 absolute top-0 right-2 text-white transition-all" onClick={handleOpenCast} >
+                    { !isCastOpen ? <AiFillPlusSquare size="2em" /> : <AiFillMinusSquare size="2em" /> }
+                  </div> :
+                  ''
+                }
+                <div id="cast" className={`flex justify-start items-center flex-wrap w-full md:gap-3 xl:gap-6 ${isCastOpen ? 'h-full' : 'h-[0px]'} overflow-hidden`}>
                   {
                     movieCast?.cast?.map((actor, key) => {
                       return (
                         key <= 20 ?
-                        <div key={key} className="actor base:w-[95%] md:w-[45%] xl:w-[30%] 2xl:w-[22%] h-[330px] flex flex-col justify-center items-start">
+                        <div key={key} className="actor base:w-[95%] md:w-[45%] xl:w-[30%] 2xl:w-[22%] base:h-[auto] md:h-[330px] flex flex-col justify-center items-start base:mb-6 md:mb-0">
                           <LazyLoadImage
-                            className="object-cover h-full w-full relative transition-all"
+                            className="base:object-contain md:object-cover h-full w-full relative transition-all"
                             src={'https://image.tmdb.org/t/p/w400/' + actor.profile_path}
                             height={300}
                             alt="actor_profile_pic"

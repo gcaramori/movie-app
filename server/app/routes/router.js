@@ -13,7 +13,7 @@ route.post('/users/find', userController.find);
 route.put('/users', userController.update);
 route.delete('/users', userController.delete);
 route.post('/signin', userController.signin);
-route.get('/logout', userController.logout);
+route.post('/logout', userController.logout);
 
 //watch_list
 route.post('/watch_list', watchListController.add);

@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion';
 import { AiFillHome, AiOutlineUnorderedList, AiFillStar, AiFillEye, AiFillCompass, AiOutlineClose } from 'react-icons/ai';
 import { BiCategory } from 'react-icons/bi';
@@ -16,6 +16,7 @@ const Sidebar = ({ isMobile }) => {
     const { setCurrentUser } = useContext(UserContext);
     const { currentRoute, setCurrentRoute } = useContext(RouteContext);
     const location = useLocation();
+    const navigate = useNavigate();
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -28,7 +29,9 @@ const Sidebar = ({ isMobile }) => {
     }, [location, setCurrentRoute]);
 
     const handleExit = async () => {
-        await fetch('http://localhost:8080/api/logout')
+        await fetch('http://localhost:8080/api/logout', {
+            method: 'POST'
+        })
         .then(data => data.json())
         .then(parsedData => {
             if(parsedData)  {
@@ -38,6 +41,8 @@ const Sidebar = ({ isMobile }) => {
                 deleteCookie('jwtToken');
                 deleteCookie('user');
                 deleteCookie('route');
+
+                navigate('/');
             }
         })
         .catch(err => console.log(err));

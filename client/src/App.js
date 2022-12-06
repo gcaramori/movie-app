@@ -11,6 +11,7 @@ import Movies from './routes/Movies';
 import Series from './routes/Series';
 import MyList from './routes/MyList';
 import MovieDetails from './routes/MovieDetails';
+import SeriesDetails from './routes/SeriesDetails';
 import PasswordRecovery from './routes/PasswordRecovery';
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
           <Route path="/series" element={<Series />} />
           <Route path="/my_list" element={<MyList />} />
           <Route path="/movie/details/:id" element={<MovieDetails isMobile={isMobile} />} />
+          <Route path="/tv/details/:id" element={<SeriesDetails isMobile={isMobile} />} />
         </Routes>
       </div>
     </div>

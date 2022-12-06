@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 
-const CarouselElement = ({ title, movies }) =>  {
+const CarouselElement = ({ title, movies, type }) =>  {
     const carouselRef = useRef(null);
     const [carouselValue, setCarouselValue] = useState(1);
     const [activeSlide, setActiveSlide] = useState(1);
@@ -72,10 +72,10 @@ const CarouselElement = ({ title, movies }) =>  {
                     </div>
                     <ul ref={carouselRef} id="carousel" className="flex justify-start items-center h-[370px] w-full gap-4 transition-all">
                         {
-                            (movies && movies.length > 0) ? movies.map((movie, key) => {
+                            movies?.map((movie, key) => {
                                 return (
                                     <li key={key} className={key === 0 ? "carouselItem active transition-all" : "carouselItem transition-all"} data-number={key + 1}>
-                                        <Link to={"/movie/details/" + movie.id} className="block relative h-[350px] base:w-[170px] sm:w-[200px] transition-all hover:scale-105">
+                                        <Link to={`/${type}/details/${movie.id}`} className="block relative h-[350px] base:w-[170px] sm:w-[200px] transition-all hover:scale-105">
                                             <LazyLoadImage
                                                 className="object-contain h-full w-full relative transition-all"
                                                 src={'https://image.tmdb.org/t/p/w500/' + movie.poster_path}
@@ -85,7 +85,7 @@ const CarouselElement = ({ title, movies }) =>  {
                                         </Link>
                                     </li>
                                 )
-                            }) : ''
+                            })
                         }
                     </ul>
                 </div>

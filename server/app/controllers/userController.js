@@ -205,7 +205,7 @@ exports.logout = (req, res) => {
     try {
         res.clearCookie("jwt");
 
-        res.status(200).send(true);
+        res.status(200).send({ status: true });
     }
     catch(err) {
         res.status(500).send({ message: `Error while trying to logout. Error: ${err}` });

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { AiFillStar, AiFillPlusSquare, AiFillMinusSquare } from 'react-icons/ai';
@@ -13,6 +13,7 @@ const MovieDetails = ({ isMobile }) => {
   const [movieReviews, setMovieReviews] = useState();
   const [myRating, setMyRating] = useState();
   const location = useLocation();
+  const navigate = useNavigate();
   const movieId = location.pathname.split('/').pop();
 
   useEffect(() => {
@@ -59,9 +60,9 @@ const MovieDetails = ({ isMobile }) => {
   
   return (
     <div id="movieDetails" className='w-full h-full font-main md:py-8 xl:py-12 md:px-6 xl:px-12 relative'>
-      <Link to='/' className="absolute base:top-4 base:left-[unset] lg:left-6 base:right-3 lg:right-[unset] block h-12 w-12 z-50 text-white">
+      <button onClick={() => navigate(-1)} className="absolute base:top-4 base:left-[unset] lg:left-6 base:right-3 lg:right-[unset] block h-12 w-12 z-50 text-white">
         <BiArrowBack id="backButton" />
-      </Link>
+      </button>
       
       <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 base:pt-14 md:pt-10 lg:pt-4 md:px-0 xl:px-10 relative w-full h-full overflow-hidden">
         <motion.div

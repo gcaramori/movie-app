@@ -79,13 +79,13 @@ const Sidebar = ({ isMobile }) => {
                                     Home
                                 </Link>
                             </li>
-                            <li isactive={currentRoute === '/new' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative">
+                            <li isactive={currentRoute === '/new' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
                                 <AiFillCompass size="1.5em" className="inline-block mr-4" />
                                 <Link className="sidebar-link mr-4  transition-all font-semibold" to='/new'>
                                     Discover
                                 </Link>
                             </li>
-                            <li isactive={currentRoute === '/categories' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative">
+                            <li isactive={currentRoute === '/categories' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
                                 <BiCategory size="1.5em" className="inline-block mr-4" />
                                 <Link className="sidebar-link mr-4  transition-all font-semibold" to='/categories'>
                                     Categories
@@ -102,7 +102,7 @@ const Sidebar = ({ isMobile }) => {
                                     Last seen
                                 </Link>
                             </li>
-                            <li isactive={currentRoute === '/top_rated' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative"> 
+                            <li isactive={currentRoute === '/top_rated' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full"> 
                                 <AiFillStar size="1.5em" className="inline-block mr-4" />
                                 <Link className="sidebar-link mr-4  transition-all font-semibold" to='/top_rated'>
                                     Top Rated

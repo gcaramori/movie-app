@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { AiFillStar, AiFillPlusSquare, AiFillMinusSquare } from 'react-icons/ai';
@@ -13,13 +13,14 @@ const SeriesDetails = ({ isMobile }) => {
   const [seriesReviews, setSeriesReviews] = useState();
   const [myRating, setMyRating] = useState();
   const location = useLocation();
+  const navigate = useNavigate();
   const seriesId = location.pathname.split('/').pop();
 
   useEffect(() => {
     Promise.all([
-      fetch(`https://api.theseriesdb.org/3/tv/${seriesId}?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
-      fetch(`https://api.theseriesdb.org/3/tv/${seriesId}/credits?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
-      fetch(`https://api.theseriesdb.org/3/tv/${seriesId}/reviews?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
+      fetch(`https://api.themoviedb.org/3/tv/${seriesId}?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
+      fetch(`https://api.themoviedb.org/3/tv/${seriesId}/credits?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
+      fetch(`https://api.themoviedb.org/3/tv/${seriesId}/reviews?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
       fetch('https://filmereviews.vercel.app/api/reviews/find', {
         method: 'POST',
         headers: {
@@ -59,9 +60,9 @@ const SeriesDetails = ({ isMobile }) => {
   
   return (
     <div id="seriesDetails" className='w-full h-full font-main md:py-8 xl:py-12 md:px-6 xl:px-12 relative'>
-      <Link to='/series' className="absolute base:top-4 base:left-[unset] lg:left-6 base:right-3 lg:right-[unset] block h-12 w-12 z-50 text-white">
+      <button onClick={() => navigate(-1)} className="absolute base:top-4 base:left-[unset] lg:left-6 base:right-3 lg:right-[unset] block h-12 w-12 z-50 text-white">
         <BiArrowBack id="backButton" />
-      </Link>
+      </button>
       
       <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 base:pt-14 md:pt-10 lg:pt-4 md:px-0 xl:px-10 relative w-full h-full overflow-hidden">
         <motion.div
@@ -72,15 +73,15 @@ const SeriesDetails = ({ isMobile }) => {
         >
           <div className="relative flex base:flex-col md:flex-row base:items-start justify-between w-full h-full mb-8">
             <div id="titleAndGeneralInfo" className="base:mb-6 md:mb-0 base:px-8 sm:px-10 md:px-0">
-              <h1 id="seriesTitle" className="base:text-3xl xl:text-4xl text-white font-bold base:mb-1 md:mb-3 drop-shadow-md base:text-right md:text-left">{seriesDetails?.title}</h1>
+              <h1 id="seriesTitle" className="base:text-3xl xl:text-4xl text-white font-bold base:mb-1 md:mb-3 drop-shadow-md base:text-right md:text-left">{seriesDetails?.name}</h1>
               <div id="seriesGeneralInfo" className="block relative">
                 <div id="moreDetails" className="flex base:justify-start items-center gap-4 w-full"> 
                   <span id="releaseYear" className="inline-block text-sm text-gray-300 font-bold opacity-80 drop-shadow-md base:text-right md:text-left">
-                    {new Date(seriesDetails?.release_date).getFullYear()}
+                    {new Date(seriesDetails?.first_air_date).getFullYear()}
                   </span>
                   <span className="divider inline-block text-gray-300">|</span>
                   <span id="releaseYear" className="inline-block text-sm text-gray-300 font-bold opacity-80 drop-shadow-md base:text-right md:text-left">
-                    {seriesDetails?.runtime} mins
+                    {seriesDetails?.seasons.length} season(s)
                   </span>
                 </div>
               </div>
@@ -136,7 +137,7 @@ const SeriesDetails = ({ isMobile }) => {
                 }
               </div>
               <div id="seriesReviews" className="block base:w-[90%] md:w-full relative">
-                <h3 className="text-xl text-white drop-shadow-md font-semibold mb-8">
+                <h3 className="text-xl text-white drop-shadow-md font-semibold base:mb-3 md:mb-8">
                   Reviews
                 </h3>
                 {
@@ -166,7 +167,7 @@ const SeriesDetails = ({ isMobile }) => {
                           </a>
                         )
                       }) :
-                    <span className="text-md font-medium text-gray-300 drop-shadow-md">
+                    <span className="text-md font-medium text-gray-300 drop-shadow-md base:mb-8 md:mb-0">
                       There's no reviews of this series...
                     </span>
                   }

@@ -8,26 +8,51 @@ const Discover = () => {
     const [newInMovies, setNewInMovies] = useState();
     const [page, setPage] = useState(1);
     const [genders, setGenders] = useState(false);
+    const [selectedGender, setSelectedGender] = useState('');
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    const [years, setYears] = useState();
     const navigate = useNavigate();
 
     useEffect(() => {
         Promise.all([
-            fetch(`https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&primary_release_year=2022&sort_by=popularity_desc&page=${page}`).then(res => res.json()),
             fetch('https://api.themoviedb.org/3/genre/movie/list?api_key=34148456b4f3b196a104527b50e6d0cf').then(res => res.json()),
+            fetch(`https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&primary_release_year=${selectedYear}&with_genres=${selectedGender}&sort_by=popularity_desc&page=${page}`).then(res => res.json()),
         ])
-        .then(([movies, genders]) => {
+        .then(([genders, movies]) => {
             setNewInMovies(movies.results);
             setGenders(genders.genres);
         })
         .catch(err => {
             console.log(err);
         });
-    }, [page]);
+
+        setYears(generateYears);
+    }, [page, selectedYear, selectedGender]);
 
     const handlePagination = (e) => {
         const page = e.currentTarget.getAttribute('data-page');
         
         setPage(parseInt(page));
+    }
+
+    const handleGenderSelect = (e) => {
+        setSelectedGender(e.currentTarget.value);
+    }
+
+    const handleReleaseYearSelect = (e) => {
+        setSelectedYear(e.currentTarget.value);
+    }
+
+    const generateYears = () => {
+        const max = new Date().getFullYear();
+        const min = max - 50;
+        const years = [];
+
+        for(var i = max; i >= min; i--) {
+            years.push(i);
+        }
+
+        return years;
     }
     
     return (
@@ -36,7 +61,7 @@ const Discover = () => {
                 <BiArrowBack id="backButton" />
             </button>
             
-            <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 base:pt-14 md:pt-10 lg:pt-4 md:px-0 xl:px-10 relative w-full h-full overflow-hidden">
+            <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 base:pt-14 md:pt-10 lg:pt-4 md:px-0 xl:px-6 relative w-full h-full overflow-hidden">
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -55,8 +80,8 @@ const Discover = () => {
                         <div id="filterBar" className="absolute insetY-0 my-auto right-6 flex justify-start items-center">
                             <ul className="flex justify-start items-center gap-4">
                                 <li className="block relative">
-                                    <select className="block rounded-full bg-mainRed drop-shadow-md text-sm text-white font-semibold py-2 px-3 focus:outline-0 active:outline-0 focus:ring-0 active:ring-0">
-                                        <option className="appearance-none p-4 bg-mainRed text-white text-sm border-0" defaultValue={1} selected>Select gender</option>
+                                    <select className="block rounded-full bg-mainRed drop-shadow-md text-sm text-white font-semibold py-2 px-3 focus:outline-0 active:outline-0 focus:ring-0 active:ring-0" onChange={(e) => handleGenderSelect(e)}>
+                                        <option className="appearance-none p-4 bg-mainRed text-white text-sm border-0" defaultValue={0}>Select gender</option>
                                         {
                                             genders?.length > 0 ? genders.map((gender, key) => {
                                                 return (
@@ -66,6 +91,14 @@ const Discover = () => {
                                                 )
                                             }) : ''
                                         }
+                                    </select>
+                                </li>
+                                <li className="block relative">
+                                    <select className="block rounded-full bg-mainRed drop-shadow-md text-sm text-white font-semibold py-2 px-3 focus:outline-0 active:outline-0 focus:ring-0 active:ring-0" onChange={(e) => handleReleaseYearSelect(e)}>
+                                        <option className="appearance-none p-4 bg-mainRed text-white text-sm border-0" defaultValue={2022}>Select release year</option>
+                                        <option className="appearance-none p-4 bg-mainRed text-white text-sm border-0 hover:bg-darkGray focus:bg-darkGray active:bg-darkGray">
+                                            
+                                        </option>
                                     </select>
                                 </li>
                             </ul>

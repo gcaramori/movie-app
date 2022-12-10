@@ -3,12 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { BiArrowBack } from 'react-icons/bi';
+import Select from 'react-select';
 
 const Discover = () => {
     const [newInMovies, setNewInMovies] = useState();
     const [page, setPage] = useState(1);
-    const [genders, setGenders] = useState(false);
-    const [selectedGender, setSelectedGender] = useState('');
+    const [genres, setGenres] = useState(false);
+    const [selectedGenre, setSelectedGenre] = useState('');
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [years, setYears] = useState();
     const navigate = useNavigate();
@@ -16,18 +17,20 @@ const Discover = () => {
     useEffect(() => {
         Promise.all([
             fetch('https://api.themoviedb.org/3/genre/movie/list?api_key=34148456b4f3b196a104527b50e6d0cf').then(res => res.json()),
-            fetch(`https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&primary_release_year=${selectedYear}&with_genres=${selectedGender}&sort_by=popularity_desc&page=${page}`).then(res => res.json()),
+            fetch(`https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&primary_release_year=${selectedYear}&with_genres=${selectedGenre}&sort_by=popularity_desc&page=${page}`).then(res => res.json()),
         ])
-        .then(([genders, movies]) => {
+        .then(([genres, movies]) => {
             setNewInMovies(movies.results);
-            setGenders(genders.genres);
+
+            const genresForSelect = genres?.genres && genres?.genres.map(genre => ({ value: genre.id, label: genre.name }))
+            setGenres(genresForSelect);
         })
         .catch(err => {
             console.log(err);
         });
 
         setYears(generateYears);
-    }, [page, selectedYear, selectedGender]);
+    }, [page, selectedYear, selectedGenre]);
 
     const handlePagination = (e) => {
         const page = e.currentTarget.getAttribute('data-page');
@@ -35,12 +38,13 @@ const Discover = () => {
         setPage(parseInt(page));
     }
 
-    const handleGenderSelect = (e) => {
-        setSelectedGender(e.currentTarget.value);
+    const handleGenreSelect = (e) => {
+        const genresForSelect = e.map(genre => genre.value);
+        setSelectedGenre(genresForSelect.join(','));
     }
 
     const handleReleaseYearSelect = (e) => {
-        setSelectedYear(e.currentTarget.value);
+        setSelectedYear(e.value);
     }
 
     const generateYears = () => {
@@ -49,12 +53,15 @@ const Discover = () => {
         const years = [];
 
         for(var i = max; i >= min; i--) {
-            years.push(i);
+            years.push({
+                value: i,
+                label: i
+            });
         }
 
         return years;
     }
-    
+
     return (
         <div id="seriesDetails" className='w-full h-full font-main md:py-8 xl:py-12 md:px-6 xl:px-12 relative'>
             <button onClick={() => navigate(-1)} className="absolute base:top-4 base:left-[unset] lg:left-6 base:right-3 lg:right-[unset] block h-12 w-12 z-50 text-white">
@@ -80,26 +87,28 @@ const Discover = () => {
                         <div id="filterBar" className="absolute insetY-0 my-auto right-6 flex justify-start items-center">
                             <ul className="flex justify-start items-center gap-4">
                                 <li className="block relative">
-                                    <select className="block rounded-full bg-mainRed drop-shadow-md text-sm text-white font-semibold py-2 px-3 focus:outline-0 active:outline-0 focus:ring-0 active:ring-0" onChange={(e) => handleGenderSelect(e)}>
-                                        <option className="appearance-none p-4 bg-mainRed text-white text-sm border-0" defaultValue={0}>Select gender</option>
-                                        {
-                                            genders?.length > 0 ? genders.map((gender, key) => {
-                                                return (
-                                                    <option key={key} className="appearance-none p-4 bg-mainRed text-white text-sm border-0 hover:bg-darkGray focus:bg-darkGray active:bg-darkGray" value={gender.id}>
-                                                        {gender.name}
-                                                    </option>
-                                                )
-                                            }) : ''
-                                        }
-                                    </select>
+                                    <Select
+                                        isMulti
+                                        placeholder="Select genre"
+                                        options={genres}
+                                        name="genreOption"
+                                        className="basic-multi-select"
+                                        classNamePrefix="select"
+                                        onChange={(e) => handleGenreSelect(e)}
+                                        styles={{
+                                            
+                                        }}
+                                    />
                                 </li>
                                 <li className="block relative">
-                                    <select className="block rounded-full bg-mainRed drop-shadow-md text-sm text-white font-semibold py-2 px-3 focus:outline-0 active:outline-0 focus:ring-0 active:ring-0" onChange={(e) => handleReleaseYearSelect(e)}>
-                                        <option className="appearance-none p-4 bg-mainRed text-white text-sm border-0" defaultValue={2022}>Select release year</option>
-                                        <option className="appearance-none p-4 bg-mainRed text-white text-sm border-0 hover:bg-darkGray focus:bg-darkGray active:bg-darkGray">
-                                            
-                                        </option>
-                                    </select>
+                                    <Select
+                                        placeholder="Select release year"
+                                        options={years}
+                                        name="yearsOption"
+                                        className="basic-multi-select"
+                                        classNamePrefix="select"
+                                        onChange={(e) => handleReleaseYearSelect(e)}
+                                    />
                                 </li>
                             </ul>
                         </div>

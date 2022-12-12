@@ -77,28 +77,28 @@ const Discover = () => {
     }
 
     return (
-        <div id="seriesDetails" className="w-full h-full font-main md:py-8 xl:py-12 md:px-6 xl:px-12 relative">
-            <button onClick={() => navigate(-1)} className="absolute base:top-4 base:left-[unset] lg:left-6 base:right-3 lg:right-[unset] block h-12 w-12 z-50 text-white">
+        <div id="discoverMovies" className="w-full h-full font-main m-0 md:py-8 xl:py-12 md:px-6 xl:px-12 relative">
+            <button onClick={() => navigate(-1)} className="absolute base:top-4 lg:top-2 2xl:top-4 base:left-[unset] lg:left-6 base:right-2 lg:right-[unset] block h-12 w-12 z-50 text-white">
                 <BiArrowBack id="backButton" />
             </button>
             
-            <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 base:pt-14 md:pt-10 lg:pt-4 md:px-0 xl:px-6 relative w-full h-full overflow-hidden">
+            <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 base:pt-14 md:pt-10 lg:pt-4 base:px-6 md:px-0 xl:px-6 relative w-full h-full overflow-hidden">
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5 }}
                     className="w-full h-full"
                 >
-                    <div className="relative flex base:items-start justify-between w-full h-full mb-8">
+                    <div className="relative flex base:flex-col lg:flex-row base:items-end md:items-start justify-between w-full h-full mb-8">
                         <div id="title" className="block relative">
                             <h1 id="seriesTitle" className="base:text-3xl xl:text-4xl text-white font-bold base:mb-1 md:mb-3 drop-shadow-md base:text-right md:text-left">
                                 Discover new experiences   
                             </h1>
-                            <p className="text-md text-gray-300 drop-shadow-md opacity-80">
+                            <p className="text-md text-gray-300 drop-shadow-md opacity-80 base:text-right md:text-left">
                                 Find awesome new movies or tv shows
                             </p>
                         </div>
-                        <div id="filterBar" className="absolute insetY-0 my-auto right-6 flex justify-start items-center">
+                        <div id="filterBar" className="base:relative lg:absolute insetY-0 my-auto base:right-0 lg:right-6 flex justify-start items-center base:mt-4 lg:mt-0">
                             <ul className="flex justify-start items-center gap-4">
                                 <li className="block relative">
                                     <CustomSelect
@@ -125,7 +125,7 @@ const Discover = () => {
                             </ul>
                         </div>
                     </div>
-                    <div id="moviesPagination" className="block relative mt-6 lg:mb-6 2xl:mb-1">
+                    <div id="moviesPagination" className="block relative mb-6">
                         <Pagination 
                             props={{
                                 "onClick": (e) => handlePagination(e)
@@ -134,13 +134,13 @@ const Discover = () => {
                             pagesLength={10}
                         />
                     </div>
-                    <div id="moviesToDiscover">
-                        <ul id="movies" className="flex justify-start items-center h-auto w-full lg:gap-10 2xl:gap-4 transition-all flex-wrap">
+                    <div id="moviesToDiscover" className="block relative">
+                        <ul id="movies" className="flex md:justify-center lg:justify-start items-center h-auto w-full base:gap-2 lg:gap-4 transition-all flex-wrap">
                             {
                                 newInMovies?.length > 0 ? newInMovies.map((movie, key) => {
                                     return (
-                                        <li key={key} className={"block relative base:w-[92%] md:w-[33%] xl:w-[20%] 2xl:w-[23%]"}>
-                                            <Link to={`/movie/details/${movie.id}`} className="block relative h-[350px] base:w-[100%] transition-all lg:hover:scale-105">
+                                        <li key={key} className={"block relative h-auto base:w-full md:w-[32%] lg:w-[23%] 2xl:w-[18%]"}>
+                                            <Link to={`/movie/details/${movie.id}`} className="block relative h-full w-full transition-all lg:hover:scale-105">
                                                 <LazyLoadImage
                                                     className="object-contain h-full w-full relative transition-all"
                                                     src={"https://image.tmdb.org/t/p/w500/" + movie.poster_path}

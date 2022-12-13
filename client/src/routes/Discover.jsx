@@ -1,11 +1,18 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { lazy, Suspense, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { BiArrowBack } from "react-icons/bi";
 import CustomSelect from "../components/customSelect";
 import Pagination from "../components/pagination";
+import Spinner from "../components/spinner";
+const MovieList = lazy(() => wait().then(() => import("../components/movieList")));
+
+const wait = () => {
+    return new Promise(resolve => {
+        setTimeout(resolve, 5000);
+    });
+}
 
 const Discover = () => {
     const [newInMovies, setNewInMovies] = useState();
@@ -63,7 +70,7 @@ const Discover = () => {
 
     const generateYears = () => {
         const max = new Date().getFullYear();
-        const min = max - 50;
+        const min = max - 90;
         const years = [];
 
         for(var i = max; i >= min; i--) {
@@ -135,24 +142,9 @@ const Discover = () => {
                         />
                     </div>
                     <div id="moviesToDiscover" className="block relative">
-                        <ul id="movies" className="flex md:justify-center lg:justify-start items-center h-auto w-full base:gap-2 lg:gap-4 transition-all flex-wrap">
-                            {
-                                newInMovies?.length > 0 ? newInMovies.map((movie, key) => {
-                                    return (
-                                        <li key={key} className={"block relative h-auto base:w-full md:w-[32%] lg:w-[23%] 2xl:w-[18%]"}>
-                                            <Link to={`/movie/details/${movie.id}`} className="block relative h-full w-full transition-all lg:hover:scale-105">
-                                                <LazyLoadImage
-                                                    className="object-contain h-full w-full relative transition-all"
-                                                    src={"https://image.tmdb.org/t/p/w500/" + movie.poster_path}
-                                                    height={"100%"}
-                                                    alt="movie_poster"
-                                                />
-                                            </Link>
-                                        </li>
-                                    )
-                                }) : ""
-                            }
-                        </ul>
+                        <Suspense fallback={<Spinner />}>
+                            <MovieList movies={newInMovies} />
+                        </Suspense>
                     </div>
                 </motion.div>
             </div>

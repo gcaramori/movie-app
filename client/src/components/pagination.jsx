@@ -20,7 +20,7 @@ const Pagination = ({ props, currentPage, pagesLength }) => {
     }
 
     return (
-        <ul className="relative flex justify-start items-center gap-6 list-none">
+        <ul className="relative flex justify-start items-center gap-6 list-none w-full flex-wrap">
             {setPages()}
         </ul>
     )

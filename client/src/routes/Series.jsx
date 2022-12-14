@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import CarouselElement from "../components/carousel";
+import { lazy, Suspense, useEffect, useState } from "react";
+import Spinner from '../components/spinner';
+const CarouselElement = lazy(() => import("../components/carousel"));
 
 const Series = () => {
     const [popularSeries, setPopularSeries] = useState(null);
@@ -37,13 +38,15 @@ const Series = () => {
     return (
         <div id="series" className="w-full h-full font-main p-2 relative">
             <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 base:px-4 md:px-10 relative w-full h-full overflow-x-hidden">
-                <CarouselElement title="Popular" movies={popularSeries} type="tv" />
-                <CarouselElement title="Airing today" movies={airingTodaySeries} type="tv" />
-                <CarouselElement title="Comedy" movies={comedySeries} type="tv" />
-                <CarouselElement title="Reality" movies={realitySeries} type="tv" />
-                <CarouselElement title="Documentary" movies={documentarySeries} type="tv" />
-                <CarouselElement title="Sci-fi and Fantasy" movies={scienceAndFantasySeries} type="tv" />
-                <CarouselElement title="War and Politics" movies={warAndPoliticsSeries} type="tv" />
+                <Suspense fallback={<Spinner />}>
+                  <CarouselElement title="Popular" movies={popularSeries} type="tv" />
+                  <CarouselElement title="Airing today" movies={airingTodaySeries} type="tv" />
+                  <CarouselElement title="Comedy" movies={comedySeries} type="tv" />
+                  <CarouselElement title="Reality" movies={realitySeries} type="tv" />
+                  <CarouselElement title="Documentary" movies={documentarySeries} type="tv" />
+                  <CarouselElement title="Sci-fi and Fantasy" movies={scienceAndFantasySeries} type="tv" />
+                  <CarouselElement title="War and Politics" movies={warAndPoliticsSeries} type="tv" />
+                </Suspense>
             </div>
         </div>
     )

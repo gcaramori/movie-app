@@ -6,13 +6,7 @@ import { BiArrowBack } from "react-icons/bi";
 import CustomSelect from "../components/customSelect";
 import Pagination from "../components/pagination";
 import Spinner from "../components/spinner";
-const MovieList = lazy(() => wait().then(() => import("../components/movieList")));
-
-const wait = () => {
-    return new Promise(resolve => {
-        setTimeout(resolve, 5000);
-    });
-}
+const MovieList = lazy(() => import("../components/movieList"));
 
 const Discover = () => {
     const [newInMovies, setNewInMovies] = useState();

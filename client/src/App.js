@@ -15,6 +15,7 @@ import PasswordRecovery from './routes/PasswordRecovery';
 import Spinner from './components/spinner';
 const MovieDetails = lazy(() => import('./routes/MovieDetails'));
 const SeriesDetails = lazy(() => import('./routes/SeriesDetails'));
+const Categories = lazy(() => import('./routes/Categories'));
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
@@ -61,6 +62,7 @@ function App() {
             <Route path="/series" element={<Series />} />
             <Route path="/my_list" element={<MyList />} />
             <Route path="/new" element={<Discover />} />
+            <Route path="/categories" element={<Categories />} />
             <Route path="/movie/details/:id" element={<MovieDetails isMobile={isMobile} />} />
             <Route path="/tv/details/:id" element={<SeriesDetails isMobile={isMobile} />} />
           </Routes>

@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import useSWR from 'swr';
 import { motion } from 'framer-motion';
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { AiFillStar, AiFillPlusSquare, AiFillMinusSquare } from 'react-icons/ai';
 import { BiArrowBack } from 'react-icons/bi';
+import Spinner from '../components/spinner';
 
 const MovieDetails = ({ isMobile }) => {
   const [isReviewOpen, setIsReviewOpen] = useState(false);
@@ -14,7 +15,10 @@ const MovieDetails = ({ isMobile }) => {
   const [myRating, setMyRating] = useState();
   const location = useLocation();
   const navigate = useNavigate();
+  const fetcher = (...args) => fetch(...args).then(res => res.json())
   const movieId = location.pathname.split('/').pop();
+
+  const movieResponse = useSWR(`https://api.themoviedb.org/3/movie/${movieId}?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
 
   useEffect(() => {
     Promise.all([
@@ -57,7 +61,7 @@ const MovieDetails = ({ isMobile }) => {
   const handleOpenCast = () => {
     setIsCastOpen(!isCastOpen);
   }
-  
+
   return (
     <div id="movieDetails" className='w-full h-full font-main md:py-8 xl:py-12 md:px-6 xl:px-12 relative'>
       <button onClick={() => navigate(-1)} className="absolute base:top-4 base:left-[unset] lg:left-6 base:right-3 lg:right-[unset] block h-12 w-12 z-50 text-white">
@@ -73,15 +77,23 @@ const MovieDetails = ({ isMobile }) => {
         >
           <div className="relative flex base:flex-col md:flex-row base:items-start justify-between w-full h-full mb-8">
             <div id="titleAndGeneralInfo" className="base:mb-6 md:mb-0 base:px-8 sm:px-10 md:px-0">
-              <h1 id="movieTitle" className="base:text-3xl xl:text-4xl text-white font-bold base:mb-1 md:mb-3 drop-shadow-md base:text-right md:text-left">{movieDetails?.title}</h1>
+              <h1 id="movieTitle" className="base:text-3xl xl:text-4xl text-white font-bold base:mb-1 md:mb-3 drop-shadow-md base:text-right md:text-left">
+                {
+                  movieResponse.isLoading ? <Spinner /> : movieResponse.data.title
+                }
+              </h1>
               <div id="movieGeneralInfo" className="block relative">
                 <div id="moreDetails" className="flex base:justify-start items-center gap-4 w-full"> 
                   <span id="releaseYear" className="inline-block text-sm text-gray-300 font-bold opacity-80 drop-shadow-md base:text-right md:text-left">
-                    {new Date(movieDetails?.release_date).getFullYear()}
+                    {
+                      movieResponse.isLoading ? <Spinner /> : new Date(movieResponse.data.release_date).getFullYear()
+                    }
                   </span>
                   <span className="divider inline-block text-gray-300">|</span>
                   <span id="releaseYear" className="inline-block text-sm text-gray-300 font-bold opacity-80 drop-shadow-md base:text-right md:text-left">
-                    {movieDetails?.runtime} mins
+                    {
+                      movieResponse.isLoading ? <Spinner /> : `${movieResponse.data.runtime} mins`
+                    }
                   </span>
                 </div>
               </div>
@@ -92,7 +104,11 @@ const MovieDetails = ({ isMobile }) => {
                 <div className="flex justify-start items-center">
                   <AiFillStar size="1.5em" className="text-yellow-500 drop-shadow-md mr-3" />
                   <div className="rate">
-                    <span className="text-lg text-white font-bold mr-1">{movieDetails?.vote_average.toFixed(2)}</span>
+                    <span className="text-lg text-white font-bold mr-1">
+                      {
+                        movieResponse.isLoading ? <Spinner /> : movieResponse.data.vote_average.toFixed(2)
+                      }
+                    </span>
                     <span className="text-md text-gray-300 font-bold opacity-80 drop-shadow-md">/ 10</span>
                   </div>
                 </div>
@@ -122,16 +138,17 @@ const MovieDetails = ({ isMobile }) => {
           <div id="movieMainInfo" className="flex base:flex-col md:flex-row justify-start items-start md:gap-12 2xl:gap-20">
             <div className="flex justify-start items-center flex-col base:w-full md:w-[280px] lg:w-[300px] xl:w-[380px]">
               <div id="moviePoster" className="block relative base:h-[500px] md:h-[350px] xl:h-[400px] 2xl:h-[500px] base:w-[90%] md:w-[270px] xl:w-[300px] 2xl:w-[350px] transition-all mb-4">
-                <LazyLoadImage
-                  className="object-cover h-full w-full relative transition-all"
-                  src={'https://image.tmdb.org/t/p/w500/' + movieDetails?.poster_path}
-                  height={500}
-                  alt="movie_poster"
-                />
+                {
+                  movieResponse.isLoading ? <Spinner /> : <img
+                    className="object-cover h-full w-full relative transition-all"
+                    src={'https://image.tmdb.org/t/p/w500/' + movieResponse.data.poster_path}
+                    alt="movie_poster"
+                  /> 
+                }
               </div>
               <div id="movieGenres" className="flex justify-center items-center gap-4 mb-12">
                 {
-                  movieDetails?.genres?.map((genre, key) => {
+                  movieResponse.isLoading ? <Spinner /> : movieResponse.data.genres.map((genre, key) => {
                     return <Link to={"/genre/" + genre.id} key={key} className="text-xs text-white py-1 px-2 border border-white rounded-full hover:bg-white hover:text-darkGray transition-all font-bold">{genre.name}</Link>
                   })
                 }
@@ -206,10 +223,9 @@ const MovieDetails = ({ isMobile }) => {
                       return (
                         key <= 20 ?
                         <div key={key} className="actor base:w-[95%] md:w-[45%] xl:w-[30%] 2xl:w-[22%] base:h-[auto] md:h-[330px] flex flex-col justify-center items-start base:mb-6 md:mb-0">
-                          <LazyLoadImage
+                          <img
                             className="base:object-contain md:object-cover h-full w-full relative transition-all"
                             src={'https://image.tmdb.org/t/p/w400/' + actor.profile_path}
-                            height={300}
                             alt="actor_profile_pic"
                           />
                           <h4 className="text-md font-bold drop-shadow-md text-white mt-2">

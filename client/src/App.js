@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { UserContext } from './contexts/userContext';
 import { RouteContext } from './contexts/routeContext';
@@ -12,10 +12,9 @@ import Series from './routes/Series';
 import MyList from './routes/MyList';
 import Discover from './routes/Discover';
 import PasswordRecovery from './routes/PasswordRecovery';
-import Spinner from './components/spinner';
-const MovieDetails = lazy(() => import('./routes/MovieDetails'));
-const SeriesDetails = lazy(() => import('./routes/SeriesDetails'));
-const Categories = lazy(() => import('./routes/Categories'));
+import MovieDetails from './routes/MovieDetails';
+import SeriesDetails from './routes/SeriesDetails';
+import Categories from './routes/Categories';
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
@@ -56,17 +55,15 @@ function App() {
       }
       <Sidebar isMobile={isMobile} />
       <div className="base:ml-0 lg:ml-[15rem]">
-        <Suspense fallback={<Spinner />}>
-          <Routes>
-            <Route index element={<Movies />} />
-            <Route path="/series" element={<Series />} />
-            <Route path="/my_list" element={<MyList />} />
-            <Route path="/new" element={<Discover />} />
-            <Route path="/categories" element={<Categories />} />
-            <Route path="/movie/details/:id" element={<MovieDetails isMobile={isMobile} />} />
-            <Route path="/tv/details/:id" element={<SeriesDetails isMobile={isMobile} />} />
-          </Routes>
-        </Suspense>
+        <Routes>
+          <Route index element={<Movies />} />
+          <Route path="/series" element={<Series />} />
+          <Route path="/my_list" element={<MyList />} />
+          <Route path="/new" element={<Discover />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/movie/details/:id" element={<MovieDetails isMobile={isMobile} />} />
+          <Route path="/tv/details/:id" element={<SeriesDetails isMobile={isMobile} />} />
+        </Routes>
       </div>
     </div>
   );

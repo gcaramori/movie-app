@@ -1,55 +1,52 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import useSWR from 'swr';
 import Spinner from '../components/spinner';
-const CarouselElement = lazy(() => import("../components/carousel"));
+import CarouselElement from "../components/carousel";
 
 const Movies = () => {
-    const [popularMovies, setPopularMovies] = useState(null);
-    const [trendingMovies, setTrendingMovies] = useState(null);
-    const [horrorMovies, setHorrorMovies] = useState(null);
-    const [topRatedMovies, setTopRatedMovies] = useState(null);
-    const [crimeMovies, setCrimeMovies] = useState(null);
-    const [scienceMovies, setScienceMovies] = useState(null);
-    const [fantasyMovies, setFantasyMovies] = useState(null);
+  const fetcher = (...args) => fetch(...args).then(res => res.json());
 
-    useEffect(() => {
-      Promise.all([
-        fetch('https://api.themoviedb.org/3/movie/popular?api_key=34148456b4f3b196a104527b50e6d0cf').then(res => res.json()),
-        fetch('https://api.themoviedb.org/3/trending/all/day?api_key=34148456b4f3b196a104527b50e6d0cf').then(res => res.json()),
-        fetch('https://api.themoviedb.org/3/movie/top_rated?api_key=34148456b4f3b196a104527b50e6d0cf').then(res => res.json()),
-        fetch('https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&with_genres=27').then(res => res.json()),
-        fetch('https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&with_genres=80').then(res => res.json()),
-        fetch('https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&with_genres=878').then(res => res.json()),
-        fetch('https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&with_genres=14').then(res => res.json()),
-      ])
-      .then(([popularMovies, trendingMovies, horror, topRated, crime, scienceFiction, fantasy]) => {
-        setPopularMovies(popularMovies.results);
-        setTrendingMovies(trendingMovies.results);
-        setTopRatedMovies(topRated.results);
-        setHorrorMovies(horror.results);
-        setCrimeMovies(crime.results);
-        setScienceMovies(scienceFiction.results);
-        setFantasyMovies(fantasy.results);
-      })
-      .catch(err => {
-        console.log(err);
-      })
-    }, []);
+  const popularMovies = useSWR(`https://api.themoviedb.org/3/movie/popular?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
+  const trendingMovies = useSWR(`https://api.themoviedb.org/3/trending/all/day?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
+  const horrorMovies = useSWR(`https://api.themoviedb.org/3/movie/top_rated?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
+  const topRatedMovies = useSWR(`https://api.themoviedb.org/3/trending/all/day?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
+  const crimeMovies = useSWR(`https://api.themoviedb.org/3/trending/all/day?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
+  const scienceMovies = useSWR(`https://api.themoviedb.org/3/trending/all/day?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
+  const fantasyMovies = useSWR(`https://api.themoviedb.org/3/trending/all/day?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
 
-    return (
-      <div id="movies" className='w-full h-full font-main p-2 relative'> 
-          <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 base:px-4 md:px-10 relative w-full h-full overflow-x-hidden">
-            <Suspense fallback={<Spinner />}>
-              <CarouselElement title="Popular" movies={popularMovies} type="movie" />
-              <CarouselElement title="Trending" movies={trendingMovies} type="movie" />
-              <CarouselElement title="Top Rated" movies={topRatedMovies} type="movie" />
-              <CarouselElement title="Horror" movies={horrorMovies} type="movie" />
-              <CarouselElement title="Crime" movies={crimeMovies} type="movie" />
-              <CarouselElement title="Science Fiction" movies={scienceMovies} type="movie" />
-              <CarouselElement title="Fantasy" movies={fantasyMovies} type="movie" />
-            </Suspense>
-          </div>
-      </div>
-    );
+  return (
+    <div id="movies" className='w-full h-full font-main p-2 relative'> 
+        <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 base:px-4 md:px-10 relative w-full h-full overflow-x-hidden">
+          {
+            popularMovies.isLoading ? <Spinner />
+            : <CarouselElement title="Popular" movies={popularMovies.data.results} type="movie" />
+          }
+          {
+            trendingMovies.isLoading ? <Spinner />
+            : <CarouselElement title="Trending" movies={trendingMovies.data.results} type="movie" />
+          }
+          {
+            topRatedMovies.isLoading ? <Spinner />
+            : <CarouselElement title="Top Rated" movies={topRatedMovies.data.results} type="movie" />
+          }
+          {
+            horrorMovies.isLoading ? <Spinner />
+            : <CarouselElement title="Horror" movies={horrorMovies.data.results} type="movie" />
+          }
+          {
+            crimeMovies.isLoading ? <Spinner />
+            : <CarouselElement title="Crime" movies={crimeMovies.data.results} type="movie" />
+          }
+          {
+            scienceMovies.isLoading ? <Spinner />
+            : <CarouselElement title="Science Fiction" movies={scienceMovies.data.results} type="movie" />
+          }
+          {
+            fantasyMovies.isLoading ? <Spinner />
+            : <CarouselElement title="Fantasy" movies={fantasyMovies.data.results} type="movie" />
+          }
+        </div>
+    </div>
+  );
 }
 
 export default Movies;

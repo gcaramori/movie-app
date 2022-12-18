@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { BiArrowBack } from "react-icons/bi";
 
 const Categories = () => {
-    const [categories, setCategories] = useState(null);
+    const [categories, setCategories] = useState();
     const navigate = useNavigate();
 
     useEffect(() => {

@@ -1,51 +1,27 @@
-import { lazy, Suspense, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import useSWR from 'swr';
 import { motion } from "framer-motion";
 import { BiArrowBack } from "react-icons/bi";
 import CustomSelect from "../components/customSelect";
 import Pagination from "../components/pagination";
 import Spinner from "../components/spinner";
-const MovieList = lazy(() => import("../components/movieList"));
+import MovieList from "../components/movieList";
 
 const Discover = () => {
-    const [newInMovies, setNewInMovies] = useState();
     const [page, setPage] = useState(1);
-    const [genres, setGenres] = useState(false);
     const [selectedGenre, setSelectedGenre] = useState("");
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [years, setYears] = useState();
+    const fetcher = (...args) => fetch(...args).then(res => res.json());
     const navigate = useNavigate();
 
+    const genreResponse = useSWR(`https://api.themoviedb.org/3/genre/movie/list?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
+    const movieResponse = useSWR(`https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&primary_release_year=${selectedYear}&with_genres=${selectedGenre}&sort_by=popularity.desc&page=${page}`, fetcher);
+
     useEffect(() => {
-        const cancelToken = axios.CancelToken.source();
-
-        axios.all([
-            axios.get("https://api.themoviedb.org/3/genre/movie/list?api_key=34148456b4f3b196a104527b50e6d0cf", {
-                cancelToken: cancelToken.token
-            }),
-            axios.get(`https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&primary_release_year=${selectedYear}&with_genres=${selectedGenre}&sort_by=popularity.desc&page=${page}`, {
-                cancelToken: cancelToken.token
-            })
-        ])
-        .then(axios.spread((genres, movies) => {
-            setNewInMovies(movies.data.results);
-            
-            const genresForSelect = genres?.data?.genres && genres?.data?.genres.map(genre => ({ value: genre.id, label: genre.name }));
-            setGenres(genresForSelect);
-        }))
-        .catch(err => {
-            if(axios.isCancel(err)) {
-                console.log("Cancelled!");
-            }
-        });
-
-        setYears(generateYears);
-
-        return () => {
-            cancelToken.cancel();
-        }
-    }, [page, selectedYear, selectedGenre]);
+        setYears(generateYears());
+    }, []);
 
     const handlePagination = (e) => {
         const page = e.currentTarget.getAttribute("data-page");
@@ -102,15 +78,18 @@ const Discover = () => {
                         <div id="filterBar" className="base:relative lg:absolute insetY-0 my-auto base:right-0 lg:right-6 flex justify-start items-center base:mt-4 lg:mt-0">
                             <ul className="flex justify-start items-center gap-4">
                                 <li className="block relative">
-                                    <CustomSelect
-                                        props={{
-                                            "placeholder": "Select genres",
-                                            "name": "genreOption",
-                                            "options": genres,
-                                            "isMulti": true,
-                                            "onChange": (e) => handleGenreSelect(e)
-                                        }}
-                                    />
+                                    {
+                                        genreResponse.isLoading ? <Spinner />
+                                        : <CustomSelect
+                                            props={{
+                                                "placeholder": "Select genres",
+                                                "name": "genreOption",
+                                                "options": genreResponse.data.genres.map(genre => ({ value: genre.id, label: genre.name })),
+                                                "isMulti": true,
+                                                "onChange": (e) => handleGenreSelect(e)
+                                            }}
+                                        />
+                                    }
                                 </li>
                                 <li className="block relative">
                                     <CustomSelect
@@ -136,9 +115,10 @@ const Discover = () => {
                         />
                     </div>
                     <div id="moviesToDiscover" className="block relative">
-                        <Suspense fallback={<Spinner />}>
-                            <MovieList movies={newInMovies} />
-                        </Suspense>
+                        {
+                            movieResponse.isLoading ? <Spinner />
+                            : <MovieList movies={movieResponse.data.results} />
+                        }
                     </div>
                 </motion.div>
             </div>

@@ -9,45 +9,28 @@ import Spinner from '../components/spinner';
 const MovieDetails = ({ isMobile }) => {
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [isCastOpen, setIsCastOpen] = useState(false);
-  const [movieDetails, setMovieDetails] = useState();
-  const [movieCast, setMovieCast] = useState();
-  const [movieReviews, setMovieReviews] = useState();
-  const [myRating, setMyRating] = useState();
   const location = useLocation();
   const navigate = useNavigate();
-  const fetcher = (...args) => fetch(...args).then(res => res.json())
+  const fetcher = (...args) => fetch(...args).then(res => res.json());
   const movieId = location.pathname.split('/').pop();
 
   const movieResponse = useSWR(`https://api.themoviedb.org/3/movie/${movieId}?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
+  const castResponse = useSWR(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
+  const reviewsResponse = useSWR(`https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
+  const myRatingResponse = useSWR(`https://filmereviews.vercel.app/api/reviews/find`, fetcher('https://filmereviews.vercel.app/api/reviews/find', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({  
+      filter: {
+        movieId: movieId
+      }
+    })
+  }));
 
   useEffect(() => {
-    Promise.all([
-      fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
-      fetch(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
-      fetch(`https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=34148456b4f3b196a104527b50e6d0cf`).then(res => res.json()),
-      fetch('https://filmereviews.vercel.app/api/reviews/find', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({  
-          filter: {
-            movieId: movieId
-          }
-        })
-      }).then(res => res.json())
-    ])
-    .then(([movieDetails, cast, reviews, myRating]) => {
-      setMovieDetails(movieDetails);
-      setMovieCast(cast);
-      setMovieReviews(reviews.results);
-      setMyRating(myRating);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-
     if(!isMobile) {
       setIsCastOpen(true);
       setIsReviewOpen(true);
@@ -117,10 +100,11 @@ const MovieDetails = ({ isMobile }) => {
                 <span className="inline-block text-md text-gray-300 font-bold opacity-80 drop-shadow-md">Your rating</span>
                 <div className="flex justify-start items-center ">
                   {
-                    myRating && myRating.length > 0 ?
-                    <>
+                    myRatingResponse.isLoading ? <Spinner />
+                    : myRatingResponse.data && myRatingResponse.data.length > 0
+                    ? <>
                       <div className="rate">
-                        <span className="text-lg text-white font-bold mr-1">{myRating.avaliation}</span>
+                        <span className="text-lg text-white font-bold mr-1">{myRatingResponse.data.avaliation}</span>
                         <span className="text-md text-gray-300 font-bold opacity-80 drop-shadow-md">/ 10</span>
                       </div> 
                     </> :
@@ -153,7 +137,7 @@ const MovieDetails = ({ isMobile }) => {
                   })
                 }
               </div>
-              <div id="movieReviews" className="block base:w-[90%] md:w-full relative">
+              <div id="reviewsResponse.data" className="block base:w-[90%] md:w-full relative">
                 <h3 className="text-xl text-white drop-shadow-md font-semibold mb-8">
                   Reviews
                 </h3>
@@ -166,25 +150,26 @@ const MovieDetails = ({ isMobile }) => {
                 }
                 <div id="reviewsContainer" className={`flex flex-col justify-start items-start gap-8 base:w-[90%] md:w-full ${isReviewOpen ? 'h-full' : 'h-[0px]'} overflow-hidden relative transition-all`}>
                   {
-                    movieReviews?.length > 0 ? 
-                      movieReviews?.map((review, key) => {
-                        return (
-                          <a key={key} rel="noreferrer" target="_blank" href={review.url} className="block relative w-full">
-                            <div className="authorProfile relative flex justify-start items-start gap-4 w-full">
-                              <div className="block mr-3">
-                                <div className="authorPic h-16 w-16 overflow-hidden relative block text-left mb-2">
-                                  <img src={"https://secure.gravatar.com/avatar/" + review.author_details.avatar_path} alt="authorPic" className="h-full w-full object-contain" />
-                                </div>
-                                <span className="text-xs text-white font-bold block drop-shadow-md">{review.author_details.name || "User"}</span>
+                    reviewsResponse.isLoading ? <Spinner />
+                    : reviewsResponse.data.results && reviewsResponse.data.results.length > 0
+                    ? reviewsResponse.data.results.map((review, key) => {
+                      return (
+                        <a key={key} rel="noreferrer" target="_blank" href={review.url} className="block relative w-full">
+                          <div className="authorProfile relative flex justify-start items-start gap-4 w-full">
+                            <div className="block mr-3">
+                              <div className="authorPic h-16 w-16 overflow-hidden relative block text-left mb-2">
+                                <img src={"https://secure.gravatar.com/avatar/" + review.author_details.avatar_path} alt="authorPic" className="h-full w-full object-contain" />
                               </div>
-                              <div className="text-gray-300 text-sm font-medium drop-shadow-md block text-left line-clamp-5">
-                                {review.content}
-                              </div>
+                              <span className="text-xs text-white font-bold block drop-shadow-md">{review.author_details.name || "User"}</span>
                             </div>
-                          </a>
-                        )
-                      }) :
-                    <span className="text-md font-medium text-gray-300 drop-shadow-md">
+                            <div className="text-gray-300 text-sm font-medium drop-shadow-md block text-left line-clamp-5">
+                              {review.content}
+                            </div>
+                          </div>
+                        </a>
+                      )
+                    })
+                    : <span className="text-md font-medium text-gray-300 drop-shadow-md">
                       There's no reviews of this movie...
                     </span>
                   }
@@ -194,16 +179,20 @@ const MovieDetails = ({ isMobile }) => {
               
             <div className="flex justify-start items-start flex-col base:max-w-[90%] lg:max-w-[85%] xl:max-w-[60%] mx-[auto]">
               {
-                movieDetails?.tagline ? <span id="movieTagline" className="text-2xl text-gray-300 opacity-70 font-bold drop-shadow-md mb-10 text-justify">
-                  "{movieDetails.tagline}"
-                </span> : ''
+                movieResponse.isLoading ? <Spinner /> : <span id="movieTagline" className="text-2xl text-gray-300 opacity-70 font-bold drop-shadow-md mb-10 text-justify">
+                  "{movieResponse.data.tagline}"
+                </span>
               }
               <div id="movieOverview" className="block mb-10">
                 <h3 className="text-xl text-white drop-shadow-md font-semibold mb-3">
                   Overview
                 </h3>
                 <span className="text-lg text-gray-300 drop-shadow-md font-medium">
-                  {movieDetails?.overview}
+                  {
+                    movieResponse.isLoading ? <Spinner /> 
+                    : movieResponse.data.overview !== '' ? 
+                    `"${movieResponse.data.overview}"` : ''
+                  }
                 </span>
               </div>
               <div id="movieCast" className='block relative'>
@@ -219,7 +208,9 @@ const MovieDetails = ({ isMobile }) => {
                 }
                 <div id="cast" className={`flex justify-start items-center flex-wrap w-full md:gap-3 xl:gap-6 ${isCastOpen ? 'h-full' : 'h-[0px]'} overflow-hidden`}>
                   {
-                    movieCast?.cast?.map((actor, key) => {
+                    castResponse.isLoading ? <Spinner />
+                    : castResponse.data.cast.length > 0 
+                    ? castResponse.data.cast.map((actor, key) => {
                       return (
                         key <= 20 ?
                         <div key={key} className="actor base:w-[95%] md:w-[45%] xl:w-[30%] 2xl:w-[22%] base:h-[auto] md:h-[330px] flex flex-col justify-center items-start base:mb-6 md:mb-0">
@@ -234,7 +225,7 @@ const MovieDetails = ({ isMobile }) => {
                         </div> :
                         ''
                       )
-                    })
+                    }) : ''
                   }
                 </div>
               </div>

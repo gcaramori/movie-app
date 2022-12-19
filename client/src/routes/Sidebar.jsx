@@ -61,7 +61,7 @@ const Sidebar = ({ isMobile }) => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
             >
-                <div id="sidebar" className={`fixed top-0 left-0 h-full w-[15rem] base:py-14 md:py-10 font-main bg-darkGray transition-all z-40 ${isMobile && !isSidebarOpen ? "translate-x-[-100%]" : ""}`}>
+                <div id="sidebar" className={`fixed top-0 left-0 h-full w-[15rem] base:py-6 md:py-10 font-main bg-darkGray transition-all z-40 ${isMobile && !isSidebarOpen ? "translate-x-[-100%]" : ""}`}>
                     {
                         isMobile && isSidebarOpen ? 
                         <div id="toggleSidebar" className="absolute top-2 right-1 h-10 w-10 text-white z-50 transition-all bg-darkGray rounded-full flex justify-center items-center" onClick={toggleSidebar}>
@@ -70,7 +70,7 @@ const Sidebar = ({ isMobile }) => {
                         ''
                     }
                     <div className="sidebarSection">
-                        <h1 className="base:text-xl text-2xl text-left text-gray-400 drop-shadow-md ml-6 mb-10">FilmeReviews</h1>
+                        <h1 className="base:text-xl text-2xl text-left text-gray-400 drop-shadow-md ml-6 base:mb-6 md:mb-10">FilmeReviews</h1>
                         <span className="block text-xs text-gray-400 ml-6 font-medium mb-4">MENU</span>
                         <ul className="sidebarMenu flex flex-col justify-center items-start ml-6">
                             <li isactive={currentRoute && (currentRoute === '/' || currentRoute === '/series' || currentRoute.indexOf('/movie/') > -1 || currentRoute.indexOf('/series/') > -1) ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
@@ -132,7 +132,7 @@ const Sidebar = ({ isMobile }) => {
                             </li>
                         </ul>
                     </div>
-                    <div className="block absolute base:bottom-12 md:bottom-8 left-[1.5rem]">
+                    <div className="block relative top-0 left-[1.5rem] mt-4">
                         <IoIosExit size="1.5em" className="inline-block mr-4 text-mainRed" />
                         <Link className="sidebar-link mr-4  transition-all font-semibold" onClick={handleExit}>
                             Logout

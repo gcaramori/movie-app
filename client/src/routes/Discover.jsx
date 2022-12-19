@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 import { BiArrowBack } from "react-icons/bi";
 import CustomSelect from "../components/customSelect";
 import Pagination from "../components/pagination";
-import Spinner from "../components/spinner";
 import MovieList from "../components/movieList";
+import Spinner from "../components/spinner";
 
 const Discover = () => {
     const [page, setPage] = useState(1);
@@ -66,12 +66,12 @@ const Discover = () => {
                     transition={{ duration: 0.5 }}
                     className="w-full h-full"
                 >
-                    <div className="relative flex base:flex-col lg:flex-row base:items-end md:items-start justify-between w-full h-full mb-8">
+                    <div className="relative flex base:flex-col lg:flex-row items-start justify-between w-full h-full mb-8">
                         <div id="title" className="block relative">
-                            <h1 id="seriesTitle" className="base:text-3xl xl:text-4xl text-white font-bold base:mb-1 md:mb-3 drop-shadow-md base:text-right md:text-left">
+                            <h1 id="seriesTitle" className="base:text-3xl xl:text-4xl text-white font-bold base:mb-1 md:mb-3 drop-shadow-md text-left">
                                 Discover new experiences   
                             </h1>
-                            <p className="text-md text-gray-300 drop-shadow-md opacity-80 base:text-right md:text-left">
+                            <p className="text-md text-gray-300 drop-shadow-md opacity-80 text-left">
                                 Find awesome new movies or tv shows
                             </p>
                         </div>

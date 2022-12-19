@@ -1,31 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import useSWR from 'swr';
 import { motion } from "framer-motion";
 import { BiArrowBack } from "react-icons/bi";
+import Spinner from "../components/spinner";
 
 const Categories = () => {
-    const [categories, setCategories] = useState();
     const navigate = useNavigate();
+    const fetcher = (...args) => fetch(...args).then(res => res.json());
 
-    useEffect(() => {
-        const cancelToken = axios.CancelToken.source();
-
-        axios.get("https://api.themoviedb.org/3/genre/movie/list?api_key=34148456b4f3b196a104527b50e6d0cf", {
-            cancelToken: cancelToken.token
-        })
-        .then(categories => {
-            setCategories(categories.data);
-        })
-        .catch(err => {
-            console.log(err);
-        })
-
-        return () => {
-            cancelToken.cancel();
-        }
-    }, []);
-
+    const categoriesResponse = useSWR(`https://api.themoviedb.org/3/genre/movie/list?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
+    
     return (
         <div id="categories" className="w-full h-full font-main m-0 md:py-8 xl:py-12 md:px-6 xl:px-12 relative">
             <button onClick={() => navigate(-1)} className="absolute base:top-4 lg:top-2 2xl:top-4 base:left-[unset] lg:left-6 base:right-2 lg:right-[unset] block h-12 w-12 z-50 text-white">
@@ -51,9 +36,10 @@ const Categories = () => {
                     </div>
                     <div id="categoriesList" className="block relative">
                         {
-                            categories?.map((category, key) => {
+                            categoriesResponse.isLoading ? <Spinner />
+                            : categoriesResponse.data.genres.map((category, key) => {
                                 return (
-                                    <div key={key}>
+                                    <div key={key} className="">
                                         {category.name}
                                     </div>
                                 )

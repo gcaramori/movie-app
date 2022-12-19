@@ -705,6 +705,14 @@ video {
   margin-top: 1.5rem;
 }
 
+.mt-10 {
+  margin-top: 2.5rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
 .block {
   display: block;
 }
@@ -933,6 +941,10 @@ video {
 
 .overflow-x-hidden {
   overflow-x: hidden;
+}
+
+.overflow-y-scroll {
+  overflow-y: scroll;
 }
 
 .rounded-full {
@@ -1483,6 +1495,18 @@ body {
     bottom: 3rem;
   }
 
+  .base\:bottom-3 {
+    bottom: 0.75rem;
+  }
+
+  .base\:bottom-6 {
+    bottom: 1.5rem;
+  }
+
+  .base\:bottom-8 {
+    bottom: 2rem;
+  }
+
   .base\:my-8 {
     margin-top: 2rem;
     margin-bottom: 2rem;
@@ -1649,6 +1673,10 @@ body {
     gap: 0.5rem;
   }
 
+  .base\:overflow-y-scroll {
+    overflow-y: scroll;
+  }
+
   .base\:object-contain {
     object-fit: contain;
   }
@@ -1694,6 +1722,11 @@ body {
   .base\:py-14 {
     padding-top: 3.5rem;
     padding-bottom: 3.5rem;
+  }
+
+  .base\:py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
   }
 
   .base\:pb-4 {
@@ -1743,6 +1776,10 @@ body {
     left: 1.5rem;
   }
 
+  .sm\:bottom-12 {
+    bottom: 3rem;
+  }
+
   .sm\:mr-10 {
     margin-right: 2.5rem;
   }
@@ -1754,6 +1791,11 @@ body {
   .sm\:px-10 {
     padding-left: 2.5rem;
     padding-right: 2.5rem;
+  }
+
+  .sm\:py-14 {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
   }
 
   .sm\:pl-20 {
@@ -1793,6 +1835,10 @@ body {
 
   .md\:mb-8 {
     margin-bottom: 2rem;
+  }
+
+  .md\:mb-10 {
+    margin-bottom: 2.5rem;
   }
 
   .md\:h-\[650px\] {
@@ -2012,6 +2058,10 @@ body {
 
   .lg\:gap-4 {
     gap: 1rem;
+  }
+
+  .lg\:overflow-y-hidden {
+    overflow-y: hidden;
   }
 
   .lg\:pt-4 {

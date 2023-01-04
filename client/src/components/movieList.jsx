@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const MovieList = ({ movies }) => {
     return (
-        <ul id="movies" className="flex md:justify-center lg:justify-start items-center h-auto w-full base:gap-2 lg:gap-4 transition-all flex-wrap">
+        <ul id="movies" className="flex md:justify-center lg:justify-start items-center h-auto w-full base:gap-2 lg:gap-4 2xl:gap-8 transition-all flex-wrap">
             {
                 movies?.map((movie, key) => {
                     return (

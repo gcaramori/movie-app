@@ -10,14 +10,41 @@ import Spinner from "../components/spinner";
 
 const Discover = () => {
     const [page, setPage] = useState(1);
+    const [selectedSorting, setSelectedSorting] = useState("popularity.desc");
     const [selectedGenre, setSelectedGenre] = useState("");
-    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    const [selectedYear, setSelectedYear] = useState(new Date().getFullYear() - 1);
     const [years, setYears] = useState();
     const fetcher = (...args) => fetch(...args).then(res => res.json());
     const navigate = useNavigate();
+    const sortByOptions = [
+        {
+            value: 'popularity.desc',
+            label: 'Most popular'
+        },
+        {
+            value: 'popularity.asc',
+            label: 'Least popular'
+        },
+        {
+            value: 'vote_count.desc',
+            label: 'Most rated'
+        },
+        {
+            value: 'vote_count.asc',
+            label: 'Least rated'
+        },
+        {
+            value: 'revenue.desc',
+            label: 'Biggest revenue'
+        },
+        {
+            value: 'revenue.asc',
+            label: 'Smallest revenue'
+        }
+    ]
 
     const genreResponse = useSWR(`https://api.themoviedb.org/3/genre/movie/list?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
-    const movieResponse = useSWR(`https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&primary_release_year=${selectedYear}&with_genres=${selectedGenre}&sort_by=popularity.desc&page=${page}`, fetcher);
+    const movieResponse = useSWR(`https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&primary_release_year=${selectedYear}&with_genres=${selectedGenre}&sort_by=${selectedSorting}&page=${page}`, fetcher);
 
     useEffect(() => {
         setYears(generateYears());
@@ -27,6 +54,10 @@ const Discover = () => {
         const page = e.currentTarget.getAttribute("data-page");
         
         setPage(parseInt(page));
+    }
+
+    const handleOrderSelect = (e) => {
+        setSelectedSorting(e.value);
     }
 
     const handleGenreSelect = (e) => {
@@ -59,14 +90,14 @@ const Discover = () => {
                 <BiArrowBack id="backButton" />
             </button>
             
-            <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 base:pt-14 md:pt-10 lg:pt-4 base:px-6 md:px-0 xl:px-6 relative w-full h-full overflow-hidden">
+            <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 base:pt-14 md:pt-10 xl:pt-4 base:px-6 md:px-0 xl:px-6 relative w-full h-full overflow-hidden">
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5 }}
                     className="w-full h-full"
                 >
-                    <div className="relative flex base:flex-col lg:flex-row items-start justify-between w-full h-full mb-8">
+                    <div className="relative flex base:flex-col xl:flex-row items-start justify-between w-full h-full mb-8">
                         <div id="title" className="block relative">
                             <h1 id="seriesTitle" className="base:text-3xl xl:text-4xl text-white font-bold base:mb-1 md:mb-3 drop-shadow-md text-left">
                                 Discover new experiences   
@@ -75,8 +106,20 @@ const Discover = () => {
                                 Find awesome new movies or tv shows
                             </p>
                         </div>
-                        <div id="filterBar" className="base:relative lg:absolute insetY-0 my-auto base:right-0 lg:right-6 flex justify-start items-center base:mt-4 lg:mt-0">
+                        <div id="filterBar" className="base:relative xl:absolute insetY-0 my-auto base:right-0 xl:right-6 flex justify-start items-center base:mt-4 xl:mt-0">
                             <ul className="flex justify-start items-center gap-4">
+                                <li className="block relative">
+                                    {
+                                        <CustomSelect
+                                            props={{
+                                                "placeholder": "Sort by",
+                                                "name": "sortOption",
+                                                "options": sortByOptions,
+                                                "onChange": (e) => handleOrderSelect(e)
+                                            }}
+                                        /> 
+                                    }
+                                </li>
                                 <li className="block relative">
                                     {
                                         genreResponse.isLoading ? <Spinner />

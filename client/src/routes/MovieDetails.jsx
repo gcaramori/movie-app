@@ -51,7 +51,7 @@ const MovieDetails = ({ isMobile }) => {
         <BiArrowBack id="backButton" />
       </button>
       
-      <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 base:pt-14 md:pt-10 lg:pt-4 md:px-0 xl:px-10 relative w-full h-full overflow-hidden">
+      <div id="content" className="flex flex-col justify-center items-start mb-4 py-4 base:pt-14 md:pt-10 xl:pt-4 md:px-0 xl:px-10 relative w-full h-full overflow-hidden">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

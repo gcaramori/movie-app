@@ -4,14 +4,15 @@ import { motion } from "framer-motion";
 import { BiArrowBack } from "react-icons/bi";
 import Spinner from "../components/spinner";
 
-const Categories = () => {
+const Category = () => {
     const navigate = useNavigate();
     const fetcher = (...args) => fetch(...args).then(res => res.json());
 
-    const categoriesResponse = useSWR(`https://api.themoviedb.org/3/genre/movie/list?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
+    const moviesCategoryResponse = useSWR(`https://api.themoviedb.org/3/genre/movie/list?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
+    const seriesCategoryResponse = useSWR(`https://api.themoviedb.org/3/genre/movie/list?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
     
     return (
-        <div id="categories" className="w-full h-full font-main m-0 md:py-8 xl:py-12 md:px-6 xl:px-12 relative">
+        <div id="category" className="w-full h-full font-main m-0 md:py-8 xl:py-12 md:px-6 xl:px-12 relative">
             <button onClick={() => navigate(-1)} className="absolute base:top-4 lg:top-2 2xl:top-4 base:left-[unset] lg:left-6 base:right-2 lg:right-[unset] block h-12 w-12 z-50 text-white">
                 <BiArrowBack id="backButton" />
             </button>
@@ -33,7 +34,7 @@ const Categories = () => {
                             </p>
                         </div>
                     </div>
-                    <div id="categoriesList" className="flex flex-wrap justify-start items-around base:gap-6 xl:gap-12 relative">
+                    <div id="movieList" className="flex flex-wrap justify-start items-around base:gap-6 xl:gap-12 relative">
                         {
                             categoriesResponse.isLoading ? <Spinner />
                             : categoriesResponse.data.genres.map((category, key) => {
@@ -51,4 +52,4 @@ const Categories = () => {
     );
 }
 
-export default Categories;
+export default Category;

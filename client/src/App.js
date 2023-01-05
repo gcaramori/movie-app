@@ -14,7 +14,6 @@ import Discover from './routes/Discover';
 import PasswordRecovery from './routes/PasswordRecovery';
 import MovieDetails from './routes/MovieDetails';
 import SeriesDetails from './routes/SeriesDetails';
-import Categories from './routes/Categories';
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
@@ -22,11 +21,8 @@ function App() {
   const { currentRoute } = useContext(RouteContext);
   
   const handleResize = () => {
-    if (window.innerWidth <= 769) {
-        setIsMobile(true);
-    } else {
-        setIsMobile(false);
-    }
+    if (window.innerWidth <= 769) setIsMobile(true);
+    else setIsMobile(false);
   }
 
   useEffect(() => {
@@ -60,7 +56,6 @@ function App() {
           <Route path="/series" element={<Series />} />
           <Route path="/my_list" element={<MyList />} />
           <Route path="/new" element={<Discover />} />
-          <Route path="/categories" element={<Categories />} />
           <Route path="/movie/details/:id" element={<MovieDetails isMobile={isMobile} />} />
           <Route path="/tv/details/:id" element={<SeriesDetails isMobile={isMobile} />} />
         </Routes>

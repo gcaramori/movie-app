@@ -1972,10 +1972,6 @@ body {
 }
 
 @media (min-width: 1024px) {
-  .lg\:absolute {
-    position: absolute;
-  }
-
   .lg\:top-2 {
     top: 0.5rem;
   }
@@ -1988,16 +1984,8 @@ body {
     right: unset;
   }
 
-  .lg\:right-6 {
-    right: 1.5rem;
-  }
-
   .lg\:ml-\[15rem\] {
     margin-left: 15rem;
-  }
-
-  .lg\:mt-0 {
-    margin-top: 0px;
   }
 
   .lg\:h-\[4\.2rem\] {
@@ -2034,10 +2022,6 @@ body {
 
   .lg\:gap-4 {
     gap: 1rem;
-  }
-
-  .lg\:gap-8 {
-    gap: 2rem;
   }
 
   .lg\:pt-4 {
@@ -2109,18 +2093,6 @@ body {
     gap: 1.5rem;
   }
 
-  .xl\:gap-14 {
-    gap: 3.5rem;
-  }
-
-  .xl\:gap-10 {
-    gap: 2.5rem;
-  }
-
-  .xl\:gap-8 {
-    gap: 2rem;
-  }
-
   .xl\:py-12 {
     padding-top: 3rem;
     padding-bottom: 3rem;
@@ -2172,15 +2144,11 @@ body {
     width: 22%;
   }
 
-  .\32xl\:flex-row {
-    flex-direction: row;
+  .\32xl\:gap-8 {
+    gap: 2rem;
   }
 
   .\32xl\:gap-20 {
     gap: 5rem;
-  }
-
-  .\32xl\:gap-8 {
-    gap: 2rem;
   }
 }

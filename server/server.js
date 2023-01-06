@@ -7,7 +7,8 @@ const morgan = require('morgan');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
-const connectDB = require('./app/database/connection');
+const connectMongo = require('./app/database/mongo');
+const connectRedis = require('./app/database/redis');
 const path = require('path');
 
 const app = express();
@@ -21,7 +22,10 @@ const PORT = process.env.PORT || 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-connectDB();
+//mongoDB
+connectMongo();
+//redis
+connectRedis();
 
 app.use(session({
     name: 'login',

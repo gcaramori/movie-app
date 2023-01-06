@@ -7,11 +7,11 @@ const Movies = () => {
 
   const popularMovies = useSWR(`https://api.themoviedb.org/3/movie/popular?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
   const trendingMovies = useSWR(`https://api.themoviedb.org/3/trending/all/day?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
-  const horrorMovies = useSWR(`https://api.themoviedb.org/3/movie/top_rated?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
-  const topRatedMovies = useSWR(`https://api.themoviedb.org/3/trending/all/day?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
-  const crimeMovies = useSWR(`https://api.themoviedb.org/3/trending/all/day?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
-  const scienceMovies = useSWR(`https://api.themoviedb.org/3/trending/all/day?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
-  const fantasyMovies = useSWR(`https://api.themoviedb.org/3/trending/all/day?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
+  const topRatedMovies = useSWR(`https://api.themoviedb.org/3/movie/top_rated?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
+  const horrorMovies = useSWR(`https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&with_genres=27`, fetcher);
+  const crimeMovies = useSWR(`https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&with_genres=80`, fetcher);
+  const scienceMovies = useSWR(`https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&with_genres=878`, fetcher);
+  const fantasyMovies = useSWR(`https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&with_genres=14`, fetcher);
 
   return (
     <div id="movies" className='w-full h-full font-main p-2 relative'> 

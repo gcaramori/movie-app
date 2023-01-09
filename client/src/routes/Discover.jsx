@@ -50,7 +50,7 @@ const Discover = () => {
     useEffect(() => {
         setYears(generateYears());
 
-        if(totalItems <= 0) setTotalItems(movieResponse.data.total_results);
+        if(totalItems <= 0) setTotalItems(movieResponse?.data?.total_results);
     }, [totalItems, movieResponse?.data?.total_results]);
 
     const handleOrderSelect = (e) => {

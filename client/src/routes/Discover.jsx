@@ -10,6 +10,7 @@ import Spinner from "../components/spinner";
 
 const Discover = () => {
     const [page, setPage] = useState(1);
+    const [totalItems, setTotalItems] = useState(0);
     const [selectedSorting, setSelectedSorting] = useState("popularity.desc");
     const [selectedGenre, setSelectedGenre] = useState("");
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear() - 1);
@@ -41,20 +42,16 @@ const Discover = () => {
             value: 'revenue.asc',
             label: 'Smallest revenue'
         }
-    ]
+    ];
 
     const genreResponse = useSWR(`https://api.themoviedb.org/3/genre/movie/list?api_key=34148456b4f3b196a104527b50e6d0cf`, fetcher);
     const movieResponse = useSWR(`https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&primary_release_year=${selectedYear}&with_genres=${selectedGenre}&sort_by=${selectedSorting}&page=${page}`, fetcher);
 
     useEffect(() => {
         setYears(generateYears());
-    }, []);
 
-    const handlePagination = (e) => {
-        const page = e.currentTarget.innerText.trim();
-        
-        setPage(parseInt(page));
-    }
+        if(totalItems <= 0) setTotalItems(movieResponse.data.total_results);
+    }, [totalItems, movieResponse?.data?.total_results]);
 
     const handleOrderSelect = (e) => {
         setSelectedSorting(e.value);
@@ -150,13 +147,9 @@ const Discover = () => {
                     </div>
                     <div id="moviesPagination" className="block relative mb-6">
                         {
-                            movieResponse.isLoading ? <Spinner />
-                            : <Pagination 
-
-                                props={{
-                                    "onClick": (e) => handlePagination(e)
-                                }}
-                                pagesLength={movieResponse.data.total_results / 20}
+                           <Pagination
+                                setSelectedPage={setPage}
+                                totalItems={totalItems}
                             />
                         }
                     </div>

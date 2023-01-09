@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import ReactPaginate from 'react-paginate';
 
-const Pagination = ({ props, pagesLength }) => {
+const Pagination = ({ setSelectedPage, totalItems }) => {
     const [itemOffset, setItemOffset] = useState(0);
-    const items = Array.from(Array(parseInt(pagesLength)).keys());
-    const pageCount = Math.ceil(items.length / 20);
+    const items = [Array(parseInt(totalItems)).keys()];
+    const pageCount = Math.ceil(totalItems / 20);
 
     const handlePageClick = (event) => {
-        const newOffset = (event.selected * pagesLength) % items.length;
-
+        const newOffset = event.selected * 20 % items.length;
         setItemOffset(newOffset);
+
+        setSelectedPage(event.selected + 1);
     };
 
     return (
@@ -19,9 +20,8 @@ const Pagination = ({ props, pagesLength }) => {
             onPageChange={handlePageClick}
             pageRangeDisplayed={5}
             pageCount={pageCount}
-            previousLabel="Previous"
+            previousLabel="Prev"
             renderOnZeroPageCount={null}
-            {...props}
         />
     );
 }

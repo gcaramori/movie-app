@@ -8,7 +8,6 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const connectMongo = require('./app/database/mongo');
-const connectRedis = require('./app/database/redis');
 const path = require('path');
 
 const app = express();
@@ -24,8 +23,6 @@ app.use(express.urlencoded({ extended: true }));
 
 //mongoDB
 connectMongo();
-//redis
-connectRedis();
 
 app.use(session({
     name: 'login',

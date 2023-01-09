@@ -51,7 +51,7 @@ const Discover = () => {
     }, []);
 
     const handlePagination = (e) => {
-        const page = e.currentTarget.getAttribute("data-page");
+        const page = e.currentTarget.innerText.trim();
         
         setPage(parseInt(page));
     }
@@ -149,13 +149,16 @@ const Discover = () => {
                         </div>
                     </div>
                     <div id="moviesPagination" className="block relative mb-6">
-                        <Pagination 
-                            props={{
-                                "onClick": (e) => handlePagination(e)
-                            }}
-                            currentPage={page}
-                            pagesLength={10}
-                        />
+                        {
+                            movieResponse.isLoading ? <Spinner />
+                            : <Pagination 
+
+                                props={{
+                                    "onClick": (e) => handlePagination(e)
+                                }}
+                                pagesLength={movieResponse.data.total_results / 20}
+                            />
+                        }
                     </div>
                     <div id="moviesToDiscover" className="block relative">
                         {

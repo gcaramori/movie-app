@@ -1,29 +1,29 @@
-const Pagination = ({ props, currentPage, pagesLength }) => {
-    const setPages = () => {
-        let content = [];
-        
-        for (let i = 1; i < pagesLength + 1; i++) {
-            content.push(
-                <li key={i} className="block">
-                    <button 
-                        className={`inline-block text-white font-semibold text-center px-2 rounded-sm border border-mainRed text-md drop-shadow-md ${currentPage === i ? 'bg-mainRed' : 'bg-transparent'}`} 
-                        {...props}
-                        data-page={i}
-                    >
-                        {i}
-                    </button>
-                </li>    
-            );
-        }
+import { useState } from 'react';
+import ReactPaginate from 'react-paginate';
 
-        return content;
-    }
+const Pagination = ({ props, pagesLength }) => {
+    const [itemOffset, setItemOffset] = useState(0);
+    const items = Array.from(Array(parseInt(pagesLength)).keys());
+    const pageCount = Math.ceil(items.length / 20);
+
+    const handlePageClick = (event) => {
+        const newOffset = (event.selected * pagesLength) % items.length;
+
+        setItemOffset(newOffset);
+    };
 
     return (
-        <ul className="relative flex justify-start items-center gap-6 list-none w-full flex-wrap">
-            {setPages()}
-        </ul>
-    )
+        <ReactPaginate
+            breakLabel="..."
+            nextLabel="Next"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={5}
+            pageCount={pageCount}
+            previousLabel="Previous"
+            renderOnZeroPageCount={null}
+            {...props}
+        />
+    );
 }
 
 export default Pagination;

@@ -3,7 +3,6 @@ const route = express.Router();
 const userController = require('../controllers/userController');
 const watchListController = require('../controllers/watchListController');
 const reviewController = require('../controllers/reviewController');
-const lastSeenController = require('../controllers/lastSeenController');
 const auth = require("../middleware/auth");
 
 //API
@@ -28,8 +27,5 @@ route.post('/reviews', reviewController.add);
 route.post('/reviews/find', reviewController.find);
 route.put('/reviews', auth, reviewController.update);
 route.delete('/reviews', reviewController.remove);
-
-//last seen
-route.get('/last_seen', lastSeenController.getLastSeen);
 
 module.exports = route;

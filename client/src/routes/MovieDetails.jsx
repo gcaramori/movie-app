@@ -5,10 +5,12 @@ import { motion } from 'framer-motion';
 import { AiFillStar, AiFillPlusSquare, AiFillMinusSquare } from 'react-icons/ai';
 import { BiArrowBack } from 'react-icons/bi';
 import Spinner from '../components/spinner';
+import { setCookie, getCookie } from '../utils/helper';
 
 const MovieDetails = ({ isMobile }) => {
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [isCastOpen, setIsCastOpen] = useState(false);
+  const [lastSeen, setLastSeen] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
   const fetcher = (...args) => fetch(...args).then(res => res.json());
@@ -29,8 +31,18 @@ const MovieDetails = ({ isMobile }) => {
       }
     })
   }));
-
+  
   useEffect(() => {
+    if(getCookie('lastSeen') !== null) {
+      const lastSeenIds = JSON.parse(getCookie('lastSeen'));
+      lastSeenIds.push(movieId);
+
+      setCookie('lastSeen', JSON.stringify(lastSeenIds), 365);
+    }
+    else {
+      setCookie('lastSeen', JSON.stringify([movieId]), 365);
+    }
+
     if(!isMobile) {
       setIsCastOpen(true);
       setIsReviewOpen(true);

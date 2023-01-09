@@ -9,7 +9,7 @@ const connectMongo = () => {
     try {
         //mongodb connection string
         mongoose.connect(process.env.MONGO_URI, options, () => {
-            console.log(`MongoDB Connected!`);
+            console.log(`MongoDB connected!`);
         });
     }
     catch(err) {

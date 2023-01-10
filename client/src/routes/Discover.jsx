@@ -50,8 +50,8 @@ const Discover = () => {
     useEffect(() => {
         setYears(generateYears());
 
-        if(totalItems <= 0) setTotalItems(movieResponse?.data?.total_results);
-    }, [totalItems, movieResponse?.data?.total_results]);
+        if(totalItems <= 0 && movieResponse?.data) setTotalItems(movieResponse?.data?.total_results);
+    }, [totalItems, movieResponse?.data]);
 
     const handleOrderSelect = (e) => {
         setSelectedSorting(e.value);
@@ -146,12 +146,10 @@ const Discover = () => {
                         </div>
                     </div>
                     <div id="moviesPagination" className="block relative mb-6">
-                        {
-                           <Pagination
-                                setSelectedPage={setPage}
-                                totalItems={totalItems}
-                            />
-                        }
+                        <Pagination
+                            setSelectedPage={setPage}
+                            totalItems={totalItems}
+                        />
                     </div>
                     <div id="moviesToDiscover" className="block relative">
                         {

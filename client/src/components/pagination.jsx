@@ -1,15 +1,10 @@
-import { useState } from 'react';
 import ReactPaginate from 'react-paginate';
 
 const Pagination = ({ setSelectedPage, totalItems }) => {
-    const [itemOffset, setItemOffset] = useState(0);
-    const items = [Array(parseInt(totalItems)).keys()];
+    if(totalItems > 500) totalItems = 500;
     const pageCount = Math.ceil(totalItems / 20);
 
     const handlePageClick = (event) => {
-        const newOffset = event.selected * 20 % items.length;
-        setItemOffset(newOffset);
-
         setSelectedPage(event.selected + 1);
     };
 

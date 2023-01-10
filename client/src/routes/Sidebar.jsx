@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion';
-import { AiFillHome, AiOutlineUnorderedList, AiFillEye, AiFillCompass, AiOutlineClose } from 'react-icons/ai';
+import { AiFillHome, AiOutlineUnorderedList, AiFillCompass, AiOutlineClose } from 'react-icons/ai';
 import { MdRateReview } from 'react-icons/md';
 import { FaBars } from 'react-icons/fa';
 import { FaCog } from 'react-icons/fa';
@@ -89,12 +89,6 @@ const Sidebar = ({ isMobile }) => {
                     <div className="sidebarSection">
                         <span className="block text-xs text-gray-400 ml-6 font-medium mb-4">LIBRARY</span>
                         <ul className="sidebarMenu flex flex-col justify-center items-start ml-6">
-                            <li isactive={currentRoute === '/last_seen' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full">
-                                <AiFillEye size="1.5em" className="inline-block mr-4" />
-                                <Link className="sidebar-link mr-4 active  transition-all font-semibold" to='/last_seen'>
-                                    Last seen
-                                </Link>
-                            </li>
                             <li isactive={currentRoute === '/my_list' ? 'active' : ''} className="flex justify-start items-center mb-6 text-mainRed relative w-full"> 
                                 <AiOutlineUnorderedList size="1.5em" className="inline-block mr-4" />
                                 <Link className="sidebar-link mr-4  transition-all font-semibold" to='/my_list'>

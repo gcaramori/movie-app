@@ -14,7 +14,6 @@ import Discover from './routes/Discover';
 import PasswordRecovery from './routes/PasswordRecovery';
 import MovieDetails from './routes/MovieDetails';
 import SeriesDetails from './routes/SeriesDetails';
-import LastSeen from './routes/LastSeen';
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
@@ -59,7 +58,6 @@ function App() {
           <Route path="/new" element={<Discover />} />
           <Route path="/movie/details/:id" element={<MovieDetails isMobile={isMobile} />} />
           <Route path="/tv/details/:id" element={<SeriesDetails isMobile={isMobile} />} />
-          <Route path="/last_seen" element={<LastSeen />} />
         </Routes>
       </div>
     </div>

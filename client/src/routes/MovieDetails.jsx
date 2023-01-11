@@ -10,7 +10,6 @@ import { setCookie, getCookie } from '../utils/helper';
 const MovieDetails = ({ isMobile }) => {
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [isCastOpen, setIsCastOpen] = useState(false);
-  const [lastSeen, setLastSeen] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
   const fetcher = (...args) => fetch(...args).then(res => res.json());

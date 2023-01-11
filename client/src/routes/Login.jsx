@@ -24,9 +24,9 @@ const Login = () => {
         })
         .then(data => data.json())
         .then(parsedData => {
-            if(parsedData.user && parsedData.token) {
+            if(parsedData.user && parsedData.token && parsedData.requestToken) {
                 const token = parsedData.token;
-                const TMDBRequestToken = parsedData.request_token;
+                const TMDBRequestToken = parsedData.requestToken;
                 const user = parsedData.user;
 
                 const tomorrow = new Date(new Date().getTime() + (24 * 60 * 60 * 1000));

@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../database/models/user');
+const axios = require('axios');
 
 exports.create = async (req, res) => {
     try {
@@ -82,8 +83,17 @@ exports.signin = async (req, res) => {
         );
         
         if(token) {
-            res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
-            res.status(200).send({ user: user[0], token: token });
+            const requestToken = await axios.get('https://api.themoviedb.org/3/authentication/token/new?api_key=34148456b4f3b196a104527b50e6d0cf')
+
+            if(requestToken.data.success) { 
+                res.cookie("tmbd_request_token", requestToken.data.request_token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
+                res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
+                
+                res.status(200).send({ user: user[0], token: token, requestToken: requestToken.data.request_token });
+            }
+            else {
+                res.status(500).send({ message: 'TMDB API failed to generate request_token!' });
+            }
         }
         else res.status(500).send('Token error!');
     }

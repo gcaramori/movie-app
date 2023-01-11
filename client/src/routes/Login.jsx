@@ -26,13 +26,14 @@ const Login = () => {
         .then(parsedData => {
             if(parsedData.user && parsedData.token) {
                 const token = parsedData.token;
+                const TMDBRequestToken = parsedData.request_token;
                 const user = parsedData.user;
 
                 const tomorrow = new Date(new Date().getTime() + (24 * 60 * 60 * 1000));
                 document.cookie = `jwtToken=${token};expires=${tomorrow.toGMTString()}`;
                 document.cookie = `user=${JSON.stringify(user)};expires=${tomorrow.toGMTString()}`;
 
-                setCurrentUser({ user: user, token: token });
+                setCurrentUser({ user: user, token: token, request_token: TMDBRequestToken });
                 return;
             }
             

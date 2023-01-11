@@ -1,6 +1,8 @@
+import { useContext } from 'react';
 import useSWR from 'swr';
 import Spinner from '../components/spinner';
 import CarouselElement from "../components/carousel";
+import { UserContext } from "../contexts/userContext";
 
 const Movies = () => {
   const fetcher = (...args) => fetch(...args).then(res => res.json());
@@ -12,6 +14,9 @@ const Movies = () => {
   const crimeMovies = useSWR(`https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&with_genres=80`, fetcher);
   const scienceMovies = useSWR(`https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&with_genres=878`, fetcher);
   const fantasyMovies = useSWR(`https://api.themoviedb.org/3/discover/movie?api_key=34148456b4f3b196a104527b50e6d0cf&with_genres=14`, fetcher);
+  const { currentUser } = useContext(UserContext);
+
+  console.log(currentUser);
 
   return (
     <div id="movies" className='w-full h-full font-main p-2 relative'> 

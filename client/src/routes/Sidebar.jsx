@@ -28,7 +28,7 @@ const Sidebar = ({ isMobile }) => {
     }, [location, setCurrentRoute]);
 
     const handleExit = async () => {
-        await fetch('http://localhost:8080/api/logout', {
+        await fetch('https://filmereviews.vercel.app/api/logout', {
             method: 'POST'
         })
         .then(data => data.json())

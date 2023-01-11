@@ -214,6 +214,7 @@ exports.delete = async (req, res) => {
 exports.logout = (req, res) => {
     try {
         res.clearCookie("jwt");
+        res.clearCookie("request_token");
 
         res.status(200).send({ status: true });
     }

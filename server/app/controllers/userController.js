@@ -89,7 +89,12 @@ exports.signin = async (req, res) => {
                 res.cookie("tmbd_request_token", requestToken.data.request_token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
                 res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
                 
-                res.status(200).send({ user: user[0], token: token, requestToken: requestToken.data.request_token });
+                const tmdbSession = await axios.post('https://api.themoviedb.org/3/authentication/session/new?api_key=34148456b4f3b196a104527b50e6d0cf', {
+                    request_token: requestToken.data.request_token 
+                });
+
+                if(tmdbSession.data.success) res.status(200).send({ user: user[0], token: token, session: tmdbSession.data.session_id });
+                else res.status(400).send({ message: "TMDB API failed to generate session_id!" })
             }
             else {
                 res.status(500).send({ message: 'TMDB API failed to generate request_token!' });
